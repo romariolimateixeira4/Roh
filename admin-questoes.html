@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Questões | ROH Concursos</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #172033;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header {
+            background: linear-gradient(
+                135deg,
+                #173a8f,
+                #2455d8
+            );
+            color: white;
+            padding: 22px;
+        }
+
+        .topo {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .topo h1 {
+            margin: 0;
+        }
+
+        .topo a {
+            background: white;
+            color: #173a8f;
+            padding: 11px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        main {
+            width: min(
+                1300px,
+                calc(100% - 30px)
+            );
+            margin: 24px auto 50px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #dce3ec;
+            border-radius: 13px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(0, 1fr)
+                );
+            gap: 13px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+            gap: 13px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        select,
+        input,
+        textarea {
+            width: 100%;
+            border: 1px solid #cfd8e6;
+            border-radius: 8px;
+            padding: 11px;
+            font-size: 14px;
+            background: white;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 95px;
+        }
+
+        #enunciado {
+            min-height: 140px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 8px;
+            padding: 11px 16px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        button:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #2455d8;
+            color: white;
+        }
+
+        .btn-success {
+            background: #15803d;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e8eef7;
+            color: #27364e;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .formato {
+            margin: 15px 0;
+            border-left: 5px solid #2455d8;
+            padding: 12px;
+            background: #eff6ff;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .status {
+            margin-top: 14px;
+            font-weight: 700;
+        }
+
+        .erro {
+            color: #b91c1c;
+        }
+
+        .sucesso {
+            color: #15803d;
+        }
+
+        .tabela-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid #dce3ec;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+
+        .questao-inativa {
+            opacity: .55;
+        }
+
+        .btn-editar {
+            background: #e8eef7;
+            color: #27364e;
+            white-space: nowrap;
+        }
+
+        .alternativa-e {
+            display: none;
+        }
+
+        .grupo-ce {
+            display: none;
+        }
+
+        @media (max-width: 950px) {
+
+            .grid,
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .topo {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="topo">
+
+        <div>
+
+            <h1>
+                ROH Concursos
+            </h1>
+
+            <div>
+                Administração de Questões
+            </div>
+
+        </div>
+
+
+        <a href="index.html">
+            Voltar ao início
+        </a>
+
+    </div>
+
+</header>
+
+
+<main>
+
+
+    <section class="card">
+
+        <h2>
+            Nova / editar questão
+        </h2>
+
+
+        <input
+            type="hidden"
+            id="questaoId"
+        >
+
+
+        <div class="grid">
+
+            <div>
+
+                <label for="concurso">
+                    Concurso
+                </label>
+
+                <select id="concurso"></select>
+
+            </div>
+
+
+            <div>
+
+                <label for="cargo">
+                    Cargo
+                </label>
+
+                <select id="cargo"></select>
+
+            </div>
+
+
+            <div>
+
+                <label for="disciplina">
+                    Disciplina
+                </label>
+
+                <select id="disciplina"></select>
+
+            </div>
+
+
+            <div>
+
+                <label for="assunto">
+                    Assunto
+                </label>
+
+                <select id="assunto"></select>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="formatoQuestao"
+            class="formato"
+        >
+            Selecione concurso e cargo.
+        </div>
+
+
+        <div class="grid">
+
+            <div>
+
+                <label for="dificuldade">
+                    Dificuldade
+                </label>
+
+                <select id="dificuldade">
+
+                    <option value="facil">
+                        Fácil
+                    </option>
+
+                    <option
+                        value="media"
+                        selected
+                    >
+                        Média
+                    </option>
+
+                    <option value="dificil">
+                        Difícil
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label for="ativo">
+                    Status
+                </label>
+
+                <select id="ativo">
+
+                    <option
+                        value="true"
+                        selected
+                    >
+                        Ativa
+                    </option>
+
+                    <option value="false">
+                        Inativa
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div style="margin-top:14px">
+
+            <label for="enunciado">
+                Enunciado
+            </label>
+
+            <textarea id="enunciado"></textarea>
+
+        </div>
+
+
+        <div
+            id="grupoMultipla"
+            style="margin-top:14px"
+        >
+
+            <div class="grid-2">
+
+                <div>
+
+                    <label for="alternativaA">
+                        Alternativa A
+                    </label>
+
+                    <textarea id="alternativaA"></textarea>
+
+                </div>
+
+
+                <div>
+
+                    <label for="alternativaB">
+                        Alternativa B
+                    </label>
+
+                    <textarea id="alternativaB"></textarea>
+
+                </div>
+
+
+                <div>
+
+                    <label for="alternativaC">
+                        Alternativa C
+                    </label>
+
+                    <textarea id="alternativaC"></textarea>
+
+                </div>
+
+
+                <div>
+
+                    <label for="alternativaD">
+                        Alternativa D
+                    </label>
+
+                    <textarea id="alternativaD"></textarea>
+
+                </div>
+
+
+                <div
+                    id="boxAlternativaE"
+                    class="alternativa-e"
+                >
+
+                    <label for="alternativaE">
+                        Alternativa E
+                    </label>
+
+                    <textarea id="alternativaE"></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div style="margin-top:14px">
+
+                <label for="correta">
+                    Alternativa correta
+                </label>
+
+                <select id="correta">
+
+                    <option value="A">
+                        A
+                    </option>
+
+                    <option value="B">
+                        B
+                    </option>
+
+                    <option value="C">
+                        C
+                    </option>
+
+                    <option value="D">
+                        D
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+
+        <div
+            id="grupoCe"
+            class="grupo-ce"
+            style="margin-top:14px"
+        >
+
+            <label for="gabaritoCe">
+                Gabarito Certo / Errado
+            </label>
+
+            <select id="gabaritoCe">
+
+                <option value="C">
+                    CERTO
+                </option>
+
+                <option value="E">
+                    ERRADO
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div
+            class="grid-2"
+            style="margin-top:14px"
+        >
+
+            <div>
+
+                <label for="explicacao">
+                    Explicação
+                </label>
+
+                <textarea id="explicacao"></textarea>
+
+            </div>
+
+
+            <div>
+
+                <label for="baseLegal">
+                    Base legal / fonte
+                </label>
+
+                <textarea id="baseLegal"></textarea>
+
+            </div>
+
+        </div>
+
+
+        <div class="acoes">
+
+            <button
+                type="button"
+                id="btnSalvar"
+                class="btn-success"
+            >
+                Salvar questão
+            </button>
+
+
+            <button
+                type="button"
+                id="btnNovo"
+                class="btn-secondary"
+            >
+                Limpar formulário
+            </button>
+
+        </div>
+
+
+        <div
+            id="statusFormulario"
+            class="status"
+        ></div>
+
+    </section>
+
+
+
+    <section class="card">
+
+        <h2>
+            Questões cadastradas
+        </h2>
+
+
+        <div class="grid">
+
+            <div>
+
+                <label for="filtroBusca">
+                    Buscar
+                </label>
+
+                <input
+                    type="text"
+                    id="filtroBusca"
+                    placeholder="Parte do enunciado"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="filtroStatus">
+                    Status
+                </label>
+
+                <select id="filtroStatus">
+
+                    <option value="">
+                        Todas
+                    </option>
+
+                    <option value="true">
+                        Ativas
+                    </option>
+
+                    <option value="false">
+                        Inativas
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Ação
+                </label>
+
+                <button
+                    type="button"
+                    id="btnBuscar"
+                    class="btn-primary"
+                >
+                    Atualizar lista
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <p id="contador"></p>
+
+
+        <div class="tabela-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Cargo
+                        </th>
+
+                        <th>
+                            Disciplina
+                        </th>
+
+                        <th>
+                            Assunto
+                        </th>
+
+                        <th>
+                            Enunciado
+                        </th>
+
+                        <th>
+                            Gabarito
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Ação
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="listaQuestoes">
+
+                    <tr>
+
+                        <td colspan="8">
+                            Carregando...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="acoes">
+
+            <button
+                type="button"
+                id="btnAnterior"
+                class="btn-secondary"
+                disabled
+            >
+                Anterior
+            </button>
+
+            <button
+                type="button"
+                id="btnProxima"
+                class="btn-secondary"
+                disabled
+            >
+                Próxima
+            </button>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<script>
+const ROH_SUPABASE_URL =
+    "https://tvbnkjirfryluhxwpnna.supabase.co";
+
+const ROH_SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_rCGzxynHFKgEeajIAWHNAw_7Qyw9HD_";
+
+window.rohSupabase =
+    window.supabase.createClient(
+        ROH_SUPABASE_URL,
+        ROH_SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
+    );
+
+function rohSupabaseCliente() {
+    if (!window.rohSupabase) {
+        throw new Error(
+            "A conexão com o Supabase não está disponível."
+        );
+    }
+    return window.rohSupabase;
+}
+</script>
+
+
+<script>
+// ============================================================
+// ROH CONCURSOS
+// ADMINISTRAÇÃO DE QUESTÕES
+// ============================================================
+
+(() => {
+
+    "use strict";
+
+
+    const LIMITE =
+        50;
+
+
+    let cliente = null;
+
+    let concursos = [];
+
+    let questoesAtuais = [];
+
+    let offset = 0;
+
+    let totalQuestoes = 0;
+
+
+
+    const el =
+        id =>
+            document.getElementById(
+                id
+            );
+
+
+    const questaoId =
+        el("questaoId");
+
+    const concurso =
+        el("concurso");
+
+    const cargo =
+        el("cargo");
+
+    const disciplina =
+        el("disciplina");
+
+    const assunto =
+        el("assunto");
+
+    const dificuldade =
+        el("dificuldade");
+
+    const ativo =
+        el("ativo");
+
+    const enunciado =
+        el("enunciado");
+
+    const alternativaA =
+        el("alternativaA");
+
+    const alternativaB =
+        el("alternativaB");
+
+    const alternativaC =
+        el("alternativaC");
+
+    const alternativaD =
+        el("alternativaD");
+
+    const alternativaE =
+        el("alternativaE");
+
+    const boxAlternativaE =
+        el("boxAlternativaE");
+
+    const correta =
+        el("correta");
+
+    const gabaritoCe =
+        el("gabaritoCe");
+
+    const explicacao =
+        el("explicacao");
+
+    const baseLegal =
+        el("baseLegal");
+
+    const grupoMultipla =
+        el("grupoMultipla");
+
+    const grupoCe =
+        el("grupoCe");
+
+    const formatoQuestao =
+        el("formatoQuestao");
+
+    const statusFormulario =
+        el("statusFormulario");
+
+    const filtroBusca =
+        el("filtroBusca");
+
+    const filtroStatus =
+        el("filtroStatus");
+
+    const listaQuestoes =
+        el("listaQuestoes");
+
+    const contador =
+        el("contador");
+
+    const btnAnterior =
+        el("btnAnterior");
+
+    const btnProxima =
+        el("btnProxima");
+
+
+
+    function obterCliente() {
+
+        if (
+            window.rohSupabase
+            &&
+            typeof window.rohSupabase.rpc === "function"
+        ) {
+
+            return window.rohSupabase;
+
+        }
+
+
+        if (
+            window.rohSupabaseCliente
+            &&
+            typeof window.rohSupabaseCliente.rpc === "function"
+        ) {
+
+            return window.rohSupabaseCliente;
+
+        }
+
+
+        if (
+            typeof window.rohSupabaseCliente === "function"
+        ) {
+
+            const c =
+                window.rohSupabaseCliente();
+
+
+            if (
+                c
+                &&
+                typeof c.rpc === "function"
+            ) {
+
+                return c;
+
+            }
+
+        }
+
+
+        throw new Error(
+            "Cliente Supabase do ROH não encontrado."
+        );
+
+    }
+
+
+
+    async function rpc(
+        nome,
+        parametros = {}
+    ) {
+
+        const {
+            data,
+            error
+        } =
+            await cliente.rpc(
+                nome,
+                parametros
+            );
+
+
+        if (error) {
+
+            throw new Error(
+                error.message
+            );
+
+        }
+
+
+        return data;
+
+    }
+
+
+
+    function html(
+        valor
+    ) {
+
+        return String(
+            valor ?? ""
+        )
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+
+    function status(
+        mensagem,
+        tipo = ""
+    ) {
+
+        statusFormulario.textContent =
+            mensagem;
+
+
+        statusFormulario.className =
+            "status";
+
+
+        if (tipo) {
+
+            statusFormulario
+                .classList
+                .add(
+                    tipo
+                );
+
+        }
+
+    }
+
+
+
+    // ========================================================
+    // CONCURSOS
+    // ========================================================
+
+    async function carregarConcursos() {
+
+        const dados =
+            await rpc(
+
+                "roh_admin_opcoes_questao_v4",
+
+                {
+                    p_concurso_id:
+                        null,
+
+                    p_cargo_id:
+                        null,
+
+                    p_disciplina_id:
+                        null
+                }
+
+            );
+
+
+        concursos =
+            dados.concursos || [];
+
+
+        concurso.innerHTML =
+            concursos.map(
+
+                c => `
+
+                    <option value="${c.id}">
+                        ${html(c.nome)}
+                    </option>
+
+                `
+
+            ).join("");
+
+
+        if (
+            concursos.length > 0
+        ) {
+
+            await carregarCargos();
+
+        }
+
+    }
+
+
+
+    // ========================================================
+    // CARGOS
+    // ========================================================
+
+    async function carregarCargos() {
+
+        const concursoId =
+            Number(
+                concurso.value
+            );
+
+
+        const dados =
+            await rpc(
+
+                "roh_admin_opcoes_questao_v4",
+
+                {
+                    p_concurso_id:
+                        concursoId,
+
+                    p_cargo_id:
+                        null,
+
+                    p_disciplina_id:
+                        null
+                }
+
+            );
+
+
+        cargo.innerHTML =
+            (dados.cargos || [])
+                .map(
+
+                    c => `
+
+                        <option value="${c.id}">
+                            ${html(c.nome)}
+                        </option>
+
+                    `
+
+                )
+                .join("");
+
+
+        aplicarFormato();
+
+
+        if (cargo.value) {
+
+            await carregarDisciplinas();
+
+        }
+        else {
+
+            disciplina.innerHTML =
+                "";
+
+            assunto.innerHTML =
+                "";
+
+        }
+
+    }
+
+
+
+    // ========================================================
+    // DISCIPLINAS
+    // ========================================================
+
+    async function carregarDisciplinas() {
+
+        const dados =
+            await rpc(
+
+                "roh_admin_opcoes_questao_v4",
+
+                {
+                    p_concurso_id:
+                        Number(
+                            concurso.value
+                        ),
+
+                    p_cargo_id:
+                        Number(
+                            cargo.value
+                        ),
+
+                    p_disciplina_id:
+                        null
+                }
+
+            );
+
+
+        disciplina.innerHTML =
+            (dados.disciplinas || [])
+                .map(
+
+                    d => `
+
+                        <option value="${d.id}">
+                            ${html(d.nome)}
+                        </option>
+
+                    `
+
+                )
+                .join("");
+
+
+        if (
+            disciplina.value
+        ) {
+
+            await carregarAssuntos();
+
+        }
+        else {
+
+            assunto.innerHTML =
+                "";
+
+        }
+
+    }
+
+
+
+    // ========================================================
+    // ASSUNTOS
+    // ========================================================
+
+    async function carregarAssuntos() {
+
+        const dados =
+            await rpc(
+
+                "roh_admin_opcoes_questao_v4",
+
+                {
+                    p_concurso_id:
+                        Number(
+                            concurso.value
+                        ),
+
+                    p_cargo_id:
+                        Number(
+                            cargo.value
+                        ),
+
+                    p_disciplina_id:
+                        Number(
+                            disciplina.value
+                        )
+                }
+
+            );
+
+
+        assunto.innerHTML =
+            (dados.assuntos || [])
+                .map(
+
+                    a => `
+
+                        <option value="${a.id}">
+                            ${html(a.nome)}
+                        </option>
+
+                    `
+
+                )
+                .join("");
+
+    }
+
+
+
+    // ========================================================
+    // FORMATO
+    // ========================================================
+
+    function configuracaoConcursoAtual() {
+
+        return concursos.find(
+
+            c =>
+                String(c.id)
+                ===
+                String(
+                    concurso.value
+                )
+
+        );
+
+    }
+
+
+
+    function aplicarFormato() {
+
+        const config =
+            configuracaoConcursoAtual();
+
+
+        if (!config) {
+
+            return;
+
+        }
+
+
+        if (
+            config.tipo_questao ===
+            "certo_errado"
+        ) {
+
+            grupoMultipla.style.display =
+                "none";
+
+
+            grupoCe.style.display =
+                "block";
+
+
+            formatoQuestao.textContent =
+                "Formato: CERTO / ERRADO";
+
+
+            return;
+
+        }
+
+
+        grupoMultipla.style.display =
+            "block";
+
+
+        grupoCe.style.display =
+            "none";
+
+
+        if (
+            Number(
+                config.quantidade_alternativas
+            ) === 5
+        ) {
+
+            boxAlternativaE.style.display =
+                "block";
+
+
+            correta.innerHTML = `
+
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+
+            `;
+
+
+            formatoQuestao.textContent =
+                "Formato: múltipla escolha A-E";
+
+        }
+        else {
+
+            boxAlternativaE.style.display =
+                "none";
+
+
+            alternativaE.value =
+                "";
+
+
+            correta.innerHTML = `
+
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+
+            `;
+
+
+            formatoQuestao.textContent =
+                "Formato: múltipla escolha A-D";
+
+        }
+
+    }
+
+
+
+    // ========================================================
+    // SALVAR
+    // ========================================================
+
+    async function salvar() {
+
+        try {
+
+            status(
+                "Salvando..."
+            );
+
+
+            const resposta =
+                await rpc(
+
+                    "roh_admin_salvar_questao_v4",
+
+                    {
+
+                        p_id:
+                            questaoId.value
+                                ? Number(
+                                    questaoId.value
+                                )
+                                : null,
+
+                        p_cargo_id:
+                            Number(
+                                cargo.value
+                            ),
+
+                        p_disciplina_id:
+                            Number(
+                                disciplina.value
+                            ),
+
+                        p_assunto_id:
+                            Number(
+                                assunto.value
+                            ),
+
+                        p_dificuldade:
+                            dificuldade.value,
+
+                        p_enunciado:
+                            enunciado.value,
+
+                        p_alternativa_a:
+                            alternativaA.value
+                            || null,
+
+                        p_alternativa_b:
+                            alternativaB.value
+                            || null,
+
+                        p_alternativa_c:
+                            alternativaC.value
+                            || null,
+
+                        p_alternativa_d:
+                            alternativaD.value
+                            || null,
+
+                        p_alternativa_e:
+                            alternativaE.value
+                            || null,
+
+                        p_correta:
+                            correta.value
+                            || null,
+
+                        p_gabarito_ce:
+                            gabaritoCe.value
+                            || null,
+
+                        p_explicacao:
+                            explicacao.value
+                            || null,
+
+                        p_base_legal:
+                            baseLegal.value
+                            || null,
+
+                        p_ativo:
+                            ativo.value ===
+                            "true"
+
+                    }
+
+                );
+
+
+            questaoId.value =
+                resposta.id;
+
+
+            status(
+
+                `Questão ${resposta.id} salva com sucesso.`,
+
+                "sucesso"
+
+            );
+
+
+            offset = 0;
+
+
+            await listarQuestoes();
+
+        }
+        catch (erro) {
+
+            console.error(erro);
+
+
+            status(
+                erro.message,
+                "erro"
+            );
+
+        }
+
+    }
+
+
+
+    // ========================================================
+    // LIMPAR
+    // ========================================================
+
+    function limparFormulario() {
+
+        questaoId.value =
+            "";
+
+
+        dificuldade.value =
+            "media";
+
+
+        ativo.value =
+            "true";
+
+
+        enunciado.value =
+            "";
+
+
+        alternativaA.value =
+            "";
+
+
+        alternativaB.value =
+            "";
+
+
+        alternativaC.value =
+            "";
+
+
+        alternativaD.value =
+            "";
+
+
+        alternativaE.value =
+            "";
+
+
+        correta.value =
+            "A";
+
+
+        gabaritoCe.value =
+            "C";
+
+
+        explicacao.value =
+            "";
+
+
+        baseLegal.value =
+            "";
+
+
+        status(
+            ""
+        );
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+
+    // ========================================================
+    // LISTAR
+    // ========================================================
+
+    async function listarQuestoes() {
+
+        try {
+
+            const statusFiltro =
+                filtroStatus.value === ""
+
+                    ? null
+
+                    : filtroStatus.value ===
+                      "true";
+
+
+            const dados =
+                await rpc(
+
+                    "roh_admin_listar_questoes_v4",
+
+                    {
+
+                        p_concurso_id:
+                            concurso.value
+                                ? Number(
+                                    concurso.value
+                                )
+                                : null,
+
+                        p_cargo_id:
+                            cargo.value
+                                ? Number(
+                                    cargo.value
+                                )
+                                : null,
+
+                        p_disciplina_id:
+                            null,
+
+                        p_assunto_id:
+                            null,
+
+                        p_busca:
+                            filtroBusca.value
+                            || null,
+
+                        p_ativo:
+                            statusFiltro,
+
+                        p_limite:
+                            LIMITE,
+
+                        p_offset:
+                            offset
+
+                    }
+
+                );
+
+
+            questoesAtuais =
+                dados.questoes
+                || [];
+
+
+            totalQuestoes =
+                Number(
+                    dados.total
+                    || 0
+                );
+
+
+            contador.textContent =
+                `Total: ${totalQuestoes} questões`;
+
+
+            renderizarLista();
+
+
+            btnAnterior.disabled =
+                offset <= 0;
+
+
+            btnProxima.disabled =
+                (
+                    offset
+                    +
+                    LIMITE
+                )
+                >=
+                totalQuestoes;
+
+        }
+        catch (erro) {
+
+            console.error(erro);
+
+
+            listaQuestoes.innerHTML = `
+
+                <tr>
+
+                    <td colspan="8">
+                        ${html(erro.message)}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+    }
+
+
+
+    function renderizarLista() {
+
+        if (
+            questoesAtuais.length === 0
+        ) {
+
+            listaQuestoes.innerHTML = `
+
+                <tr>
+
+                    <td colspan="8">
+                        Nenhuma questão encontrada.
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        listaQuestoes.innerHTML =
+            questoesAtuais.map(
+
+                q => {
+
+                    const gabarito =
+
+                        q.tipo_questao ===
+                        "certo_errado"
+
+                            ? q.gabarito_ce
+
+                            : q.correta;
+
+
+                    return `
+
+                        <tr
+                            class="${
+                                q.ativo
+                                    ? ""
+                                    : "questao-inativa"
+                            }"
+                        >
+
+                            <td>
+                                ${q.id}
+                            </td>
+
+                            <td>
+                                ${html(q.cargo)}
+                            </td>
+
+                            <td>
+                                ${html(q.disciplina)}
+                            </td>
+
+                            <td>
+                                ${html(q.assunto)}
+                            </td>
+
+                            <td>
+                                ${html(
+                                    String(
+                                        q.enunciado
+                                        ?? ""
+                                    )
+                                    .slice(
+                                        0,
+                                        220
+                                    )
+                                )}
+                            </td>
+
+                            <td>
+                                ${html(gabarito)}
+                            </td>
+
+                            <td>
+                                ${
+                                    q.ativo
+                                        ? "Ativa"
+                                        : "Inativa"
+                                }
+                            </td>
+
+                            <td>
+
+                                <button
+                                    type="button"
+                                    class="btn-editar"
+                                    data-id="${q.id}"
+                                >
+                                    Editar
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+
+            ).join("");
+
+
+        listaQuestoes
+            .querySelectorAll(
+                ".btn-editar"
+            )
+            .forEach(
+
+                botao => {
+
+                    botao.addEventListener(
+
+                        "click",
+
+                        () =>
+                            editarQuestao(
+                                Number(
+                                    botao.dataset.id
+                                )
+                            )
+
+                    );
+
+                }
+
+            );
+
+    }
+
+
+
+    // ========================================================
+    // EDITAR
+    // ========================================================
+
+    async function editarQuestao(
+        id
+    ) {
+
+        const q =
+            questoesAtuais.find(
+                item =>
+                    Number(item.id)
+                    ===
+                    Number(id)
+            );
+
+
+        if (!q) {
+
+            return;
+
+        }
+
+
+        questaoId.value =
+            q.id;
+
+
+        if (
+            String(concurso.value)
+            !==
+            String(q.concurso_id)
+        ) {
+
+            concurso.value =
+                q.concurso_id;
+
+
+            await carregarCargos();
+
+        }
+
+
+        cargo.value =
+            q.cargo_id;
+
+
+        await carregarDisciplinas();
+
+
+        disciplina.value =
+            q.disciplina_id;
+
+
+        await carregarAssuntos();
+
+
+        assunto.value =
+            q.assunto_id;
+
+
+        dificuldade.value =
+            q.dificuldade
+            || "media";
+
+
+        ativo.value =
+            String(
+                Boolean(
+                    q.ativo
+                )
+            );
+
+
+        enunciado.value =
+            q.enunciado
+            || "";
+
+
+        alternativaA.value =
+            q.alternativa_a
+            || "";
+
+
+        alternativaB.value =
+            q.alternativa_b
+            || "";
+
+
+        alternativaC.value =
+            q.alternativa_c
+            || "";
+
+
+        alternativaD.value =
+            q.alternativa_d
+            || "";
+
+
+        alternativaE.value =
+            q.alternativa_e
+            || "";
+
+
+        aplicarFormato();
+
+
+        if (
+            q.tipo_questao ===
+            "certo_errado"
+        ) {
+
+            gabaritoCe.value =
+                q.gabarito_ce
+                || "C";
+
+        }
+        else {
+
+            correta.value =
+                q.correta
+                || "A";
+
+        }
+
+
+        explicacao.value =
+            q.explicacao
+            || "";
+
+
+        baseLegal.value =
+            q.base_legal
+            || "";
+
+
+        status(
+
+            `Editando questão ${q.id}.`
+
+        );
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+
+    // ========================================================
+    // EVENTOS
+    // ========================================================
+
+    concurso.addEventListener(
+
+        "change",
+
+        async () => {
+
+            limparFormulario();
+
+            await carregarCargos();
+
+            aplicarFormato();
+
+            offset = 0;
+
+            await listarQuestoes();
+
+        }
+
+    );
+
+
+    cargo.addEventListener(
+
+        "change",
+
+        async () => {
+
+            limparFormulario();
+
+            aplicarFormato();
+
+            await carregarDisciplinas();
+
+            offset = 0;
+
+            await listarQuestoes();
+
+        }
+
+    );
+
+
+    disciplina.addEventListener(
+
+        "change",
+
+        carregarAssuntos
+
+    );
+
+
+    el("btnSalvar")
+        .addEventListener(
+            "click",
+            salvar
+        );
+
+
+    el("btnNovo")
+        .addEventListener(
+            "click",
+            limparFormulario
+        );
+
+
+    el("btnBuscar")
+        .addEventListener(
+
+            "click",
+
+            async () => {
+
+                offset = 0;
+
+                await listarQuestoes();
+
+            }
+
+        );
+
+
+    btnAnterior.addEventListener(
+
+        "click",
+
+        async () => {
+
+            offset =
+                Math.max(
+                    0,
+                    offset - LIMITE
+                );
+
+
+            await listarQuestoes();
+
+        }
+
+    );
+
+
+    btnProxima.addEventListener(
+
+        "click",
+
+        async () => {
+
+            offset +=
+                LIMITE;
+
+
+            await listarQuestoes();
+
+        }
+
+    );
+
+
+
+    // ========================================================
+    // INICIAR
+    // ========================================================
+
+    async function iniciar() {
+
+        try {
+
+            cliente =
+                obterCliente();
+
+
+            const {
+                data,
+                error
+            } =
+                await cliente.auth
+                    .getUser();
+
+
+            if (
+                error
+                ||
+                !data?.user
+            ) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+
+            await carregarConcursos();
+
+
+            aplicarFormato();
+
+
+            await listarQuestoes();
+
+        }
+        catch (erro) {
+
+            console.error(erro);
+
+
+            status(
+                erro.message,
+                "erro"
+            );
+
+        }
+
+    }
+
+
+    iniciar();
+
+
+})();
+</script>
+
+
+</body>
+
+</html>
