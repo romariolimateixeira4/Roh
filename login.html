@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#071426"
+  >
+
+  <title>Entrar | ROH Concursos</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --azul-escuro: #071426;
+      --azul: #0b1f38;
+      --azul-claro: #173d68;
+      --dourado: #d7a83e;
+      --dourado-claro: #f0c866;
+      --branco: #ffffff;
+      --cinza: #aeb9c8;
+      --cinza-2: #8391a5;
+      --verde: #39c98d;
+      --vermelho: #ef6464;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      color: var(--branco);
+
+      background:
+        radial-gradient(
+          circle at top right,
+          #173d68 0,
+          transparent 38%
+        ),
+        linear-gradient(
+          145deg,
+          #06101f 0%,
+          #0a1d34 55%,
+          #071426 100%
+        );
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .pagina {
+      min-height: 100vh;
+
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(360px, 500px);
+    }
+
+    /* =========================
+       LADO ESQUERDO
+       ========================= */
+
+    .lado-marca {
+      padding: 46px 7vw;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      border-right:
+        1px solid rgba(255,255,255,.08);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+
+      width: fit-content;
+    }
+
+    .logo-marca {
+      width: 48px;
+      height: 48px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 14px;
+
+      font-weight: 900;
+      font-size: 22px;
+
+      color: var(--azul-escuro);
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--dourado-claro),
+          var(--dourado)
+        );
+    }
+
+    .logo-texto strong {
+      display: block;
+      font-size: 21px;
+    }
+
+    .logo-texto span {
+      color: var(--cinza);
+      font-size: 12px;
+    }
+
+    .apresentacao {
+      max-width: 650px;
+      margin: 70px 0;
+    }
+
+    .selo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 8px 13px;
+      margin-bottom: 22px;
+
+      border-radius: 999px;
+      border:
+        1px solid rgba(57,201,141,.25);
+
+      color: #7ae2b7;
+
+      background:
+        rgba(57,201,141,.08);
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .selo::before {
+      content: "";
+
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: var(--verde);
+    }
+
+    h1 {
+      max-width: 620px;
+
+      font-size:
+        clamp(42px, 5vw, 67px);
+
+      line-height: 1.02;
+
+      letter-spacing: -2px;
+    }
+
+    h1 span {
+      color: var(--dourado-claro);
+    }
+
+    .apresentacao p {
+      max-width: 590px;
+
+      margin-top: 24px;
+
+      color: #c5cfdd;
+
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .rodape-marca {
+      color: var(--cinza-2);
+      font-size: 13px;
+    }
+
+    /* =========================
+       ÁREA LOGIN
+       ========================= */
+
+    .lado-login {
+      min-height: 100vh;
+
+      padding: 35px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        rgba(3,12,24,.35);
+
+      backdrop-filter: blur(12px);
+    }
+
+    .card {
+      width: 100%;
+      max-width: 430px;
+
+      padding: 35px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      border-radius: 23px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.08),
+          rgba(255,255,255,.025)
+        );
+
+      box-shadow:
+        0 35px 90px rgba(0,0,0,.28);
+    }
+
+    .voltar {
+      display: inline-flex;
+
+      margin-bottom: 28px;
+
+      color: var(--cinza);
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .voltar:hover {
+      color: var(--branco);
+    }
+
+    .card h2 {
+      font-size: 29px;
+      letter-spacing: -.5px;
+    }
+
+    .subtitulo {
+      margin-top: 8px;
+      margin-bottom: 28px;
+
+      color: var(--cinza);
+
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .campo {
+      margin-bottom: 18px;
+    }
+
+    .campo label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #dbe4ef;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .campo input {
+      width: 100%;
+      height: 50px;
+
+      padding: 0 14px;
+
+      border:
+        1px solid rgba(255,255,255,.12);
+
+      border-radius: 11px;
+
+      outline: none;
+
+      color: var(--branco);
+
+      background:
+        rgba(255,255,255,.055);
+
+      font-size: 15px;
+
+      transition: .2s ease;
+    }
+
+    .campo input::placeholder {
+      color: #738196;
+    }
+
+    .campo input:focus {
+      border-color:
+        rgba(240,200,102,.55);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(215,168,62,.08);
+    }
+
+    .senha-wrapper {
+      position: relative;
+    }
+
+    .senha-wrapper input {
+      padding-right: 55px;
+    }
+
+    .mostrar-senha {
+      position: absolute;
+
+      right: 7px;
+      top: 7px;
+
+      width: 40px;
+      height: 36px;
+
+      border: none;
+      border-radius: 8px;
+
+      cursor: pointer;
+
+      color: var(--cinza);
+
+      background:
+        rgba(255,255,255,.06);
+    }
+
+    .mostrar-senha:hover {
+      color: var(--branco);
+    }
+
+    .botao {
+      width: 100%;
+      height: 51px;
+
+      margin-top: 5px;
+
+      border: none;
+      border-radius: 11px;
+
+      cursor: pointer;
+
+      color: #071426;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--dourado-claro),
+          var(--dourado)
+        );
+
+      font-size: 15px;
+      font-weight: 900;
+
+      transition: .2s ease;
+    }
+
+    .botao:hover {
+      transform: translateY(-1px);
+    }
+
+    .botao:disabled {
+      opacity: .65;
+      cursor: wait;
+      transform: none;
+    }
+
+    .mensagem {
+      display: none;
+
+      margin-top: 17px;
+      padding: 12px 13px;
+
+      border-radius: 9px;
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .mensagem.erro {
+      display: block;
+
+      color: #ffd0d0;
+
+      border:
+        1px solid rgba(239,100,100,.25);
+
+      background:
+        rgba(239,100,100,.10);
+    }
+
+    .mensagem.sucesso {
+      display: block;
+
+      color: #baf2db;
+
+      border:
+        1px solid rgba(57,201,141,.25);
+
+      background:
+        rgba(57,201,141,.10);
+    }
+
+    .status {
+      margin-top: 25px;
+      padding-top: 20px;
+
+      border-top:
+        1px solid rgba(255,255,255,.08);
+
+      color: var(--cinza-2);
+
+      text-align: center;
+      font-size: 12px;
+    }
+
+    /* =========================
+       CELULAR / TABLET
+       ========================= */
+
+    @media (max-width: 900px) {
+
+      .pagina {
+        display: block;
+      }
+
+      .lado-marca {
+        min-height: auto;
+
+        padding:
+          27px
+          6vw
+          45px;
+
+        border-right: none;
+      }
+
+      .apresentacao {
+        margin:
+          60px 0
+          20px;
+      }
+
+      .apresentacao p {
+        font-size: 16px;
+      }
+
+      .rodape-marca {
+        display: none;
+      }
+
+      .lado-login {
+        min-height: auto;
+
+        padding:
+          10px
+          5vw
+          55px;
+
+        background: transparent;
+      }
+
+      .card {
+        max-width: 600px;
+      }
+    }
+
+    @media (max-width: 520px) {
+
+      .lado-marca {
+        padding:
+          22px
+          5vw
+          25px;
+      }
+
+      .logo-marca {
+        width: 42px;
+        height: 42px;
+
+        font-size: 19px;
+      }
+
+      .logo-texto strong {
+        font-size: 18px;
+      }
+
+      .apresentacao {
+        margin:
+          45px 0
+          10px;
+      }
+
+      h1 {
+        font-size:
+          clamp(38px, 12vw, 49px);
+      }
+
+      .apresentacao p {
+        font-size: 15px;
+      }
+
+      .lado-login {
+        padding:
+          5px
+          4vw
+          40px;
+      }
+
+      .card {
+        padding: 24px 19px;
+
+        border-radius: 18px;
+      }
+
+      .card h2 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="pagina">
+
+    <section class="lado-marca">
+
+      <a
+        class="logo"
+        href="index.html"
+      >
+
+        <div class="logo-marca">
+          R
+        </div>
+
+        <div class="logo-texto">
+          <strong>ROH Concursos</strong>
+          <span>Preparação inteligente</span>
+        </div>
+
+      </a>
+
+      <div class="apresentacao">
+
+        <div class="selo">
+          Área do aluno
+        </div>
+
+        <h1>
+          Continue sua
+          <span>preparação.</span>
+        </h1>
+
+        <p>
+          Entre na sua conta para acessar suas questões,
+          cargos, disciplinas, revisões e desempenho na
+          ROH Concursos.
+        </p>
+
+      </div>
+
+      <div class="rodape-marca">
+        © 2026 ROH Concursos
+      </div>
+
+    </section>
+
+    <section class="lado-login">
+
+      <div class="card">
+
+        <a
+          href="index.html"
+          class="voltar"
+        >
+          ← Voltar para o início
+        </a>
+
+        <h2>Entrar</h2>
+
+        <p class="subtitulo">
+          Use o e-mail e a senha cadastrados
+          na ROH Concursos.
+        </p>
+
+        <form id="formLogin">
+
+          <div class="campo">
+
+            <label for="email">
+              E-mail
+            </label>
+
+            <input
+              type="email"
+              id="email"
+              autocomplete="email"
+              placeholder="seuemail@exemplo.com"
+              required
+            >
+
+          </div>
+
+          <div class="campo">
+
+            <label for="senha">
+              Senha
+            </label>
+
+            <div class="senha-wrapper">
+
+              <input
+                type="password"
+                id="senha"
+                autocomplete="current-password"
+                placeholder="Digite sua senha"
+                required
+              >
+
+              <button
+                class="mostrar-senha"
+                type="button"
+                id="mostrarSenha"
+                title="Mostrar ou ocultar senha"
+              >
+                👁
+              </button>
+
+            </div>
+
+          </div>
+
+          <button
+            class="botao"
+            id="btnEntrar"
+            type="submit"
+          >
+            Entrar na ROH Concursos
+          </button>
+
+          <div
+            class="mensagem"
+            id="mensagem"
+          ></div>
+
+        </form>
+
+        <div class="status">
+          Acesso protegido pela autenticação da ROH Concursos.
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <script>
+
+    /* =========================================================
+       ROH CONCURSOS
+       CONFIGURAÇÃO PÚBLICA DO SUPABASE
+       ========================================================= */
+
+    const SUPABASE_URL =
+      "https://tvbnkjirfryluhxwpnna.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_rCGzxynHFKgEeajIAWHNAw_7Qyw9HD_";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+    /* =========================================================
+       ELEMENTOS
+       ========================================================= */
+
+    const formLogin =
+      document.getElementById("formLogin");
+
+    const inputEmail =
+      document.getElementById("email");
+
+    const inputSenha =
+      document.getElementById("senha");
+
+    const btnEntrar =
+      document.getElementById("btnEntrar");
+
+    const mensagem =
+      document.getElementById("mensagem");
+
+    const mostrarSenha =
+      document.getElementById("mostrarSenha");
+
+    /* =========================================================
+       FUNÇÕES
+       ========================================================= */
+
+    function mostrarMensagem(
+      texto,
+      tipo = "erro"
+    ) {
+
+      mensagem.textContent = texto;
+
+      mensagem.className =
+        "mensagem " + tipo;
+    }
+
+    function limparMensagem() {
+
+      mensagem.textContent = "";
+
+      mensagem.className =
+        "mensagem";
+    }
+
+    function definirCarregando(
+      carregando
+    ) {
+
+      btnEntrar.disabled =
+        carregando;
+
+      btnEntrar.textContent =
+        carregando
+          ? "Entrando..."
+          : "Entrar na ROH Concursos";
+    }
+
+    /* =========================================================
+       MOSTRAR / OCULTAR SENHA
+       ========================================================= */
+
+    mostrarSenha.addEventListener(
+      "click",
+      () => {
+
+        const escondida =
+          inputSenha.type === "password";
+
+        inputSenha.type =
+          escondida
+            ? "text"
+            : "password";
+
+        mostrarSenha.textContent =
+          escondida
+            ? "🙈"
+            : "👁";
+      }
+    );
+
+    /* =========================================================
+       LOGIN
+       ========================================================= */
+
+    formLogin.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+        limparMensagem();
+
+        const email =
+          inputEmail.value
+            .trim()
+            .toLowerCase();
+
+        const senha =
+          inputSenha.value;
+
+        if (!email || !senha) {
+
+          mostrarMensagem(
+            "Informe seu e-mail e sua senha."
+          );
+
+          return;
+        }
+
+        definirCarregando(true);
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient
+              .auth
+              .signInWithPassword({
+                email,
+                password: senha
+              });
+
+          if (error) {
+
+            throw error;
+          }
+
+          if (
+            !data ||
+            !data.user ||
+            !data.session
+          ) {
+
+            throw new Error(
+              "Não foi possível iniciar a sessão."
+            );
+          }
+
+          mostrarMensagem(
+            "Login realizado com sucesso.",
+            "sucesso"
+          );
+
+          setTimeout(
+            () => {
+
+              window.location.href =
+                "questoes.html";
+
+            },
+            500
+          );
+
+        } catch (erro) {
+
+          console.error(
+            "ROH LOGIN:",
+            erro
+          );
+
+          let texto =
+            "Não foi possível entrar. Confira seu e-mail e sua senha.";
+
+          const msg =
+            (
+              erro?.message ||
+              ""
+            )
+              .toLowerCase();
+
+          if (
+            msg.includes(
+              "invalid login credentials"
+            )
+          ) {
+
+            texto =
+              "E-mail ou senha incorretos.";
+          }
+
+          if (
+            msg.includes(
+              "email not confirmed"
+            )
+          ) {
+
+            texto =
+              "Seu e-mail ainda não foi confirmado.";
+          }
+
+          mostrarMensagem(
+            texto
+          );
+
+        } finally {
+
+          definirCarregando(false);
+        }
+      }
+    );
+
+    /* =========================================================
+       SE JÁ ESTIVER LOGADO
+       ========================================================= */
+
+    async function verificarSessao() {
+
+      try {
+
+        const {
+          data
+        } =
+          await supabaseClient
+            .auth
+            .getSession();
+
+        if (
+          data &&
+          data.session
+        ) {
+
+          window.location.href =
+            "questoes.html";
+        }
+
+      } catch (erro) {
+
+        console.error(
+          "ROH SESSÃO:",
+          erro
+        );
+      }
+    }
+
+    verificarSessao();
+
+  </script>
+
+</body>
+</html>
