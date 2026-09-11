@@ -4,6 +4,30 @@
   <meta charset="UTF-8">
 
   <meta
+    http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' https://cdn.jsdelivr.net 'nonce-roh-login-2026';
+      style-src 'self' 'unsafe-inline';
+      connect-src 'self' https://tvbnkjirfryluhxwpnna.supabase.co wss://tvbnkjirfryluhxwpnna.supabase.co;
+      img-src 'self' data:;
+      font-src 'self' data:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+    "
+  >
+
+  <meta name="referrer" content="same-origin">
+
+  <meta
+    name="description"
+    content="Acesso oficial à área do aluno da ROH Concursos."
+  >
+
+  <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
@@ -427,6 +451,28 @@
         rgba(57,201,141,.10);
     }
 
+
+    .seguranca-login {
+      margin-top: 18px;
+      padding: 13px 14px;
+
+      border:
+        1px solid rgba(57,201,141,.22);
+
+      border-radius: 10px;
+
+      color: #c9f4e2;
+      background:
+        rgba(57,201,141,.07);
+
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .seguranca-login strong {
+      color: #ffffff;
+    }
+
     .status {
       margin-top: 25px;
       padding-top: 20px;
@@ -622,7 +668,11 @@
             <input
               type="email"
               id="email"
-              autocomplete="email"
+              name="email"
+              autocomplete="username"
+              inputmode="email"
+              autocapitalize="none"
+              spellcheck="false"
               placeholder="seuemail@exemplo.com"
               required
             >
@@ -640,6 +690,7 @@
               <input
                 type="password"
                 id="senha"
+                name="password"
                 autocomplete="current-password"
                 placeholder="Digite sua senha"
                 required
@@ -673,6 +724,13 @@
 
         </form>
 
+        <div class="seguranca-login">
+          <strong>Ambiente oficial da ROH Concursos.</strong><br>
+          Sua senha é usada somente para autenticação da sua conta e é
+          validada diretamente pelo serviço de autenticação do Supabase.
+          A ROH Concursos não grava sua senha nesta página.
+        </div>
+
         <div class="status">
           Acesso protegido pela autenticação da ROH Concursos.
         </div>
@@ -683,7 +741,7 @@
 
   </div>
 
-  <script>
+  <script nonce="roh-login-2026">
 
     /* =========================================================
        ROH CONCURSOS
