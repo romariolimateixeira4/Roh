@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071426">
+
+<title>Desempenho | ROH Concursos</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --fundo:#071426;
+  --dourado:#d7a83e;
+  --dourado2:#f0c866;
+  --texto:#dce5f0;
+  --cinza:#9eacbd;
+  --verde:#39c98d;
+  --vermelho:#ef6464;
+  --borda:rgba(255,255,255,.10);
+}
+
+body{
+  min-height:100vh;
+  font-family:Inter,system-ui,sans-serif;
+  color:white;
+  background:
+    radial-gradient(circle at top right,#173d68 0,transparent 35%),
+    var(--fundo);
+}
+
+header{
+  min-height:70px;
+  padding:0 5vw;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--borda);
+}
+
+.logo{
+  font-size:18px;
+  font-weight:900;
+}
+
+.logo span{
+  color:var(--dourado2);
+}
+
+.voltar{
+  padding:9px 14px;
+  border:1px solid var(--borda);
+  border-radius:9px;
+  color:var(--texto);
+  text-decoration:none;
+  background:rgba(255,255,255,.05);
+}
+
+.container{
+  width:min(1100px,92%);
+  margin:40px auto 70px;
+}
+
+h1{
+  font-size:clamp(28px,4vw,40px);
+}
+
+.subtitulo{
+  margin-top:8px;
+  color:var(--cinza);
+}
+
+.cards{
+  margin-top:25px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+}
+
+.card{
+  padding:19px;
+  border:1px solid var(--borda);
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+}
+
+.card span{
+  color:var(--cinza);
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.card strong{
+  display:block;
+  margin-top:7px;
+  font-size:26px;
+}
+
+.tabela-box{
+  margin-top:25px;
+  overflow:auto;
+  border:1px solid var(--borda);
+  border-radius:15px;
+  background:rgba(255,255,255,.035);
+}
+
+table{
+  width:100%;
+  min-width:650px;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:14px 16px;
+  text-align:left;
+  border-bottom:1px solid var(--borda);
+}
+
+th{
+  color:var(--dourado2);
+  font-size:12px;
+}
+
+td{
+  color:var(--texto);
+  font-size:13px;
+}
+
+#status{
+  margin-top:20px;
+  color:var(--cinza);
+}
+
+@media(max-width:800px){
+  .cards{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:500px){
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  header{
+    padding:15px 4vw;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    <span>ROH</span> Concursos
+  </div>
+
+  <a
+    class="voltar"
+    href="area.html"
+  >
+    ← Área do aluno
+  </a>
+
+</header>
+
+<main class="container">
+
+  <h1>Seu desempenho</h1>
+
+  <p class="subtitulo">
+    Acompanhe sua evolução na ROH Concursos.
+  </p>
+
+  <section class="cards">
+
+    <div class="card">
+      <span>Respondidas</span>
+      <strong id="respondidas">0</strong>
+    </div>
+
+    <div class="card">
+      <span>Acertos</span>
+      <strong id="acertos">0</strong>
+    </div>
+
+    <div class="card">
+      <span>Erros</span>
+      <strong id="erros">0</strong>
+    </div>
+
+    <div class="card">
+      <span>Aproveitamento</span>
+      <strong id="percentual">0%</strong>
+    </div>
+
+  </section>
+
+  <div id="status">
+    Carregando desempenho...
+  </div>
+
+  <div class="tabela-box">
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Disciplina</th>
+          <th>Respondidas</th>
+          <th>Acertos</th>
+          <th>Erros</th>
+          <th>Aproveitamento</th>
+        </tr>
+
+      </thead>
+
+      <tbody id="corpoTabela"></tbody>
+
+    </table>
+
+  </div>
+
+</main>
+
+<script>
+
+const SUPABASE_URL =
+  "https://tvbnkjirfryluhxwpnna.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_rCGzxynHFKgEeajIAWHNAw_7Qyw9HD_";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+const respondidasEl =
+  document.getElementById(
+    "respondidas"
+  );
+
+const acertosEl =
+  document.getElementById(
+    "acertos"
+  );
+
+const errosEl =
+  document.getElementById(
+    "erros"
+  );
+
+const percentualEl =
+  document.getElementById(
+    "percentual"
+  );
+
+const corpoTabela =
+  document.getElementById(
+    "corpoTabela"
+  );
+
+const status =
+  document.getElementById(
+    "status"
+  );
+
+function numero(valor){
+
+  const n =
+    Number(valor);
+
+  return Number.isFinite(n)
+    ? n
+    : 0;
+
+}
+
+async function verificarSessao(){
+
+  const {
+    data
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(!data.session){
+
+    window.location.href =
+      "login.html";
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
+function pegarResumo(data){
+
+  if(
+    Array.isArray(data)
+  ){
+
+    return data[0] || {};
+
+  }
+
+  return data || {};
+
+}
+
+async function carregarResumo(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "roh_meu_desempenho"
+      );
+
+  if(error){
+
+    console.error(
+      "ROH desempenho:",
+      error
+    );
+
+    return;
+
+  }
+
+  const r =
+    pegarResumo(data);
+
+  const respondidas =
+    numero(
+      r.respondidas ??
+      r.total_respondidas ??
+      r.total ??
+      r.quantidade
+    );
+
+  const acertos =
+    numero(
+      r.acertos ??
+      r.total_acertos ??
+      r.corretas
+    );
+
+  let erros =
+    numero(
+      r.erros ??
+      r.total_erros ??
+      r.incorretas
+    );
+
+  if(
+    !erros &&
+    respondidas >= acertos
+  ){
+
+    erros =
+      respondidas - acertos;
+
+  }
+
+  const percentual =
+    r.aproveitamento ??
+    r.percentual ??
+    r.percentual_acertos ??
+    (
+      respondidas
+        ? Math.round(
+            acertos /
+            respondidas *
+            100
+          )
+        : 0
+    );
+
+  respondidasEl.textContent =
+    respondidas;
+
+  acertosEl.textContent =
+    acertos;
+
+  errosEl.textContent =
+    erros;
+
+  percentualEl.textContent =
+    Math.round(
+      Number(percentual) || 0
+    ) + "%";
+
+}
+
+async function carregarDisciplinas(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "roh_desempenho_disciplinas"
+      );
+
+  if(error){
+
+    console.error(
+      "ROH disciplinas:",
+      error
+    );
+
+    status.textContent =
+      "Não foi possível carregar o desempenho por disciplina.";
+
+    return;
+
+  }
+
+  const itens =
+    Array.isArray(data)
+      ? data
+      : [];
+
+  corpoTabela.innerHTML =
+    "";
+
+  if(!itens.length){
+
+    status.textContent =
+      "Você ainda não possui respostas suficientes para gerar o desempenho por disciplina.";
+
+    return;
+
+  }
+
+  itens.forEach(item => {
+
+    const disciplina =
+      item.disciplina_nome ??
+      item.disciplina ??
+      item.nome ??
+      "Disciplina";
+
+    const respondidas =
+      numero(
+        item.respondidas ??
+        item.total_respondidas ??
+        item.total
+      );
+
+    const acertos =
+      numero(
+        item.acertos ??
+        item.total_acertos ??
+        item.corretas
+      );
+
+    let erros =
+      numero(
+        item.erros ??
+        item.total_erros ??
+        item.incorretas
+      );
+
+    if(
+      !erros &&
+      respondidas >= acertos
+    ){
+
+      erros =
+        respondidas -
+        acertos;
+
+    }
+
+    const percentual =
+      item.aproveitamento ??
+      item.percentual ??
+      item.percentual_acertos ??
+      (
+        respondidas
+          ? Math.round(
+              acertos /
+              respondidas *
+              100
+            )
+          : 0
+      );
+
+    const tr =
+      document.createElement(
+        "tr"
+      );
+
+    [
+      disciplina,
+      respondidas,
+      acertos,
+      erros,
+      Math.round(
+        Number(percentual) || 0
+      ) + "%"
+    ]
+    .forEach(valor => {
+
+      const td =
+        document.createElement(
+          "td"
+        );
+
+      td.textContent =
+        valor;
+
+      tr.appendChild(
+        td
+      );
+
+    });
+
+    corpoTabela.appendChild(
+      tr
+    );
+
+  });
+
+  status.textContent =
+    "Desempenho atualizado.";
+
+}
+
+async function iniciar(){
+
+  const ok =
+    await verificarSessao();
+
+  if(!ok){
+    return;
+  }
+
+  await Promise.all([
+    carregarResumo(),
+    carregarDisciplinas()
+  ]);
+
+}
+
+iniciar();
+
+</script>
+
+</body>
+</html>
