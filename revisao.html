@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071426">
+
+<title>Revisão | ROH Concursos</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --fundo:#071426;
+  --dourado:#d7a83e;
+  --dourado2:#f0c866;
+  --branco:#fff;
+  --texto:#dce5f0;
+  --cinza:#9eacbd;
+  --vermelho:#ef6464;
+  --borda:rgba(255,255,255,.10);
+}
+
+body{
+  min-height:100vh;
+  font-family:Inter,system-ui,sans-serif;
+  color:var(--branco);
+  background:
+    radial-gradient(circle at top right,#173d68 0,transparent 35%),
+    var(--fundo);
+}
+
+header{
+  min-height:70px;
+  padding:0 5vw;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  border-bottom:1px solid var(--borda);
+}
+
+.logo{
+  font-weight:900;
+  font-size:18px;
+}
+
+.logo span{
+  color:var(--dourado2);
+}
+
+.voltar{
+  padding:9px 14px;
+  border:1px solid var(--borda);
+  border-radius:9px;
+  color:var(--texto);
+  text-decoration:none;
+  background:rgba(255,255,255,.05);
+}
+
+.container{
+  width:min(1000px,92%);
+  margin:40px auto 70px;
+}
+
+h1{
+  font-size:clamp(28px,4vw,40px);
+}
+
+.subtitulo{
+  margin-top:8px;
+  color:var(--cinza);
+}
+
+#status{
+  margin-top:25px;
+  padding:18px;
+  border:1px solid var(--borda);
+  border-radius:13px;
+  color:var(--cinza);
+  background:rgba(255,255,255,.035);
+}
+
+.lista{
+  margin-top:20px;
+  display:grid;
+  gap:15px;
+}
+
+.card{
+  padding:20px;
+  border:1px solid var(--borda);
+  border-radius:15px;
+  background:rgba(255,255,255,.045);
+}
+
+.numero{
+  color:var(--dourado2);
+  font-size:12px;
+  font-weight:800;
+}
+
+.enunciado{
+  margin-top:10px;
+  color:var(--texto);
+  line-height:1.65;
+  white-space:pre-line;
+}
+
+.meta{
+  margin-top:12px;
+  color:var(--cinza);
+  font-size:12px;
+}
+
+.acoes{
+  margin-top:17px;
+}
+
+.remover{
+  padding:9px 13px;
+  border:1px solid rgba(239,100,100,.3);
+  border-radius:8px;
+  color:#ffc5c5;
+  background:rgba(239,100,100,.08);
+  cursor:pointer;
+}
+
+.vazio{
+  margin-top:25px;
+  padding:25px;
+  text-align:center;
+  color:var(--cinza);
+  border:1px dashed var(--borda);
+  border-radius:14px;
+}
+
+@media(max-width:600px){
+  header{
+    padding:15px 4vw;
+    flex-wrap:wrap;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    <span>ROH</span> Concursos
+  </div>
+
+  <a
+    href="area.html"
+    class="voltar"
+  >
+    ← Área do aluno
+  </a>
+
+</header>
+
+<main class="container">
+
+  <h1>Revisão</h1>
+
+  <p class="subtitulo">
+    Questões que você marcou para revisar.
+  </p>
+
+  <div id="status">
+    Carregando suas revisões...
+  </div>
+
+  <div
+    class="lista"
+    id="lista"
+  ></div>
+
+</main>
+
+<script>
+
+const SUPABASE_URL =
+  "https://tvbnkjirfryluhxwpnna.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_rCGzxynHFKgEeajIAWHNAw_7Qyw9HD_";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+const lista =
+  document.getElementById("lista");
+
+const status =
+  document.getElementById("status");
+
+function texto(valor){
+
+  if(
+    valor === null ||
+    valor === undefined
+  ){
+    return "";
+  }
+
+  return String(valor);
+}
+
+async function verificarSessao(){
+
+  const {
+    data
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(!data.session){
+
+    window.location.href =
+      "login.html";
+
+    return false;
+  }
+
+  return true;
+}
+
+function normalizar(item){
+
+  return {
+
+    id:
+      item.questao_id ??
+      item.id ??
+      null,
+
+    enunciado:
+      texto(
+        item.enunciado ??
+        item.questao ??
+        item.texto ??
+        "Questão marcada para revisão"
+      ),
+
+    disciplina:
+      texto(
+        item.disciplina_nome ??
+        item.disciplina ??
+        ""
+      ),
+
+    assunto:
+      texto(
+        item.assunto_nome ??
+        item.assunto ??
+        ""
+      )
+
+  };
+
+}
+
+async function removerRevisao(
+  questaoId,
+  card
+){
+
+  if(!questaoId){
+    return;
+  }
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "roh_remover_revisao",
+        {
+          p_questao_id:
+            Number(questaoId)
+        }
+      );
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      "Não foi possível remover a questão da revisão."
+    );
+
+    return;
+  }
+
+  card.remove();
+
+  if(
+    !lista.children.length
+  ){
+
+    status.textContent =
+      "Nenhuma questão marcada para revisão.";
+
+  }
+
+}
+
+async function carregar(){
+
+  const ok =
+    await verificarSessao();
+
+  if(!ok){
+    return;
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "roh_minhas_revisoes"
+      );
+
+  if(error){
+
+    console.error(
+      "ROH revisões:",
+      error
+    );
+
+    status.textContent =
+      "Não foi possível carregar suas revisões.";
+
+    return;
+  }
+
+  const itens =
+    Array.isArray(data)
+      ? data
+      : [];
+
+  lista.innerHTML = "";
+
+  if(!itens.length){
+
+    status.textContent =
+      "Nenhuma questão marcada para revisão.";
+
+    return;
+  }
+
+  status.textContent =
+    itens.length +
+    " questão(ões) marcada(s) para revisão.";
+
+  itens.forEach(
+    (item,index) => {
+
+      const q =
+        normalizar(item);
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+      card.className =
+        "card";
+
+      const numero =
+        document.createElement(
+          "div"
+        );
+
+      numero.className =
+        "numero";
+
+      numero.textContent =
+        "Questão " +
+        (index + 1);
+
+      const enunciado =
+        document.createElement(
+          "div"
+        );
+
+      enunciado.className =
+        "enunciado";
+
+      enunciado.textContent =
+        q.enunciado;
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "meta";
+
+      meta.textContent =
+        [
+          q.disciplina,
+          q.assunto
+        ]
+        .filter(Boolean)
+        .join(" • ");
+
+      const acoes =
+        document.createElement(
+          "div"
+        );
+
+      acoes.className =
+        "acoes";
+
+      const remover =
+        document.createElement(
+          "button"
+        );
+
+      remover.className =
+        "remover";
+
+      remover.textContent =
+        "Remover da revisão";
+
+      remover.addEventListener(
+        "click",
+        () =>
+          removerRevisao(
+            q.id,
+            card
+          )
+      );
+
+      acoes.appendChild(
+        remover
+      );
+
+      card.appendChild(
+        numero
+      );
+
+      card.appendChild(
+        enunciado
+      );
+
+      if(meta.textContent){
+
+        card.appendChild(
+          meta
+        );
+
+      }
+
+      card.appendChild(
+        acoes
+      );
+
+      lista.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+carregar();
+
+</script>
+
+</body>
+</html>
