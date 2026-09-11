@@ -33,7 +33,9 @@ async function carregarOpcoes(
     throw error;
   }
 
-  return Array.isArray(data)
-    ? data
-    : [];
+  return data || {
+    cargos: [],
+    disciplinas: [],
+    assuntos: []
+  };
 }
