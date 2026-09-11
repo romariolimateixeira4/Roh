@@ -21,40 +21,23 @@
       --fundo2: #0b1f38;
       --card: #102743;
       --card2: #0d2038;
-      --borda: rgba(255,255,255,.10);
-
       --dourado: #d7a83e;
       --dourado2: #f0c866;
-
       --branco: #ffffff;
       --texto: #dce5f0;
       --cinza: #9eacbd;
-
       --verde: #39c98d;
       --vermelho: #ef6464;
-      --azul: #4b9cff;
+      --borda: rgba(255,255,255,.10);
     }
 
     body {
       min-height: 100vh;
-
-      font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      background:
-        radial-gradient(
-          circle at top right,
-          #173d68 0,
-          transparent 35%
-        ),
-        var(--fundo);
-
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--branco);
+      background:
+        radial-gradient(circle at top right, #173d68 0, transparent 35%),
+        var(--fundo);
     }
 
     button,
@@ -67,23 +50,18 @@
     }
 
     header {
-      height: 72px;
-
+      min-height: 72px;
+      padding: 0 5vw;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      padding: 0 5vw;
-
-      border-bottom: 1px solid var(--borda);
-
-      background: rgba(7,20,38,.88);
-
-      backdrop-filter: blur(14px);
-
+      gap: 15px;
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 50;
+      border-bottom: 1px solid var(--borda);
+      background: rgba(7,20,38,.94);
+      backdrop-filter: blur(12px);
     }
 
     .logo {
@@ -95,23 +73,13 @@
     .logo-marca {
       width: 42px;
       height: 42px;
-
       display: grid;
       place-items: center;
-
       border-radius: 12px;
-
       color: var(--fundo);
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--dourado2),
-          var(--dourado)
-        );
-
-      font-size: 19px;
+      background: linear-gradient(135deg, var(--dourado2), var(--dourado));
       font-weight: 900;
+      font-size: 19px;
     }
 
     .logo-texto strong {
@@ -122,7 +90,6 @@
     .logo-texto span {
       display: block;
       margin-top: 2px;
-
       color: var(--cinza);
       font-size: 11px;
     }
@@ -130,93 +97,63 @@
     .topo-direita {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .usuario {
       color: var(--cinza);
-      font-size: 13px;
+      font-size: 12px;
     }
 
-    .btn-area,
-    .btn-sair {
-      padding: 9px 14px;
-
+    .btn-topo {
+      padding: 9px 13px;
       border: 1px solid var(--borda);
       border-radius: 9px;
-
       color: var(--texto);
       background: rgba(255,255,255,.05);
-
       text-decoration: none;
     }
 
-    .btn-area:hover,
-    .btn-sair:hover {
-      background: rgba(255,255,255,.09);
-    }
-
     .container {
-      width: min(1280px, 92%);
-      margin: 32px auto 60px;
+      width: min(1250px, 92%);
+      margin: 35px auto 70px;
     }
 
-    .cabecalho-pagina {
-      margin-bottom: 25px;
-    }
-
-    .cabecalho-pagina span {
+    .cabecalho span {
       color: var(--dourado2);
-
       font-size: 12px;
-      font-weight: 800;
-
+      font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    .cabecalho-pagina h1 {
-      margin-top: 7px;
-
-      font-size: clamp(27px, 4vw, 40px);
+    .cabecalho h1 {
+      margin-top: 8px;
+      font-size: clamp(29px, 4vw, 42px);
     }
 
-    .cabecalho-pagina p {
-      margin-top: 8px;
-
+    .cabecalho p {
+      margin-top: 9px;
       color: var(--cinza);
-
       line-height: 1.6;
     }
 
     .filtros {
+      margin-top: 28px;
       padding: 20px;
-
       display: grid;
-
-      grid-template-columns:
-        1.4fr
-        1fr
-        1fr
-        auto;
-
-      gap: 13px;
+      grid-template-columns: 1.4fr 1fr 1fr auto;
       align-items: end;
-
+      gap: 13px;
       border: 1px solid var(--borda);
       border-radius: 17px;
-
-      background:
-        rgba(255,255,255,.045);
+      background: rgba(255,255,255,.045);
     }
 
     .campo label {
       display: block;
-
       margin-bottom: 7px;
-
       color: var(--cinza);
-
       font-size: 12px;
       font-weight: 700;
     }
@@ -224,171 +161,134 @@
     .campo select {
       width: 100%;
       height: 46px;
-
       padding: 0 12px;
-
-      outline: none;
-
       border: 1px solid var(--borda);
       border-radius: 9px;
-
+      outline: none;
       color: var(--branco);
       background: var(--card2);
     }
 
-    .campo select:focus {
-      border-color: rgba(240,200,102,.55);
-    }
-
     .campo select option {
+      color: white;
       background: var(--fundo2);
-      color: var(--branco);
     }
 
-    .btn-carregar {
+    .btn-buscar {
       height: 46px;
-
-      padding: 0 22px;
-
+      padding: 0 20px;
       border: none;
       border-radius: 9px;
-
       color: var(--fundo);
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--dourado2),
-          var(--dourado)
-        );
-
+      background: linear-gradient(135deg, var(--dourado2), var(--dourado));
       font-weight: 900;
     }
 
-    .btn-carregar:disabled {
-      opacity: .55;
+    .btn-buscar:disabled {
+      opacity: .5;
       cursor: not-allowed;
     }
 
     .stats {
+      margin: 17px 0;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-
       gap: 12px;
-
-      margin: 17px 0;
     }
 
     .stat {
       padding: 16px;
-
       border: 1px solid var(--borda);
       border-radius: 13px;
-
       background: rgba(255,255,255,.035);
     }
 
     .stat span {
       display: block;
-
       color: var(--cinza);
-
       font-size: 11px;
-      font-weight: 700;
-
+      font-weight: 800;
       text-transform: uppercase;
     }
 
     .stat strong {
       display: block;
+      margin-top: 6px;
+      font-size: 23px;
+    }
 
-      margin-top: 5px;
+    .mensagem {
+      padding: 24px;
+      border: 1px dashed var(--borda);
+      border-radius: 15px;
+      text-align: center;
+      color: var(--cinza);
+      background: rgba(255,255,255,.025);
+    }
 
-      font-size: 22px;
+    .mensagem.erro {
+      color: #ffc9c9;
+      border-color: rgba(239,100,100,.4);
     }
 
     .questao-card {
       display: none;
-
       padding: clamp(20px, 4vw, 32px);
-
       border: 1px solid var(--borda);
-      border-radius: 19px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,.065),
-          rgba(255,255,255,.025)
-        );
-
-      box-shadow:
-        0 30px 70px rgba(0,0,0,.16);
+      border-radius: 18px;
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,.065),
+        rgba(255,255,255,.025)
+      );
     }
 
     .questao-topo {
       display: flex;
       justify-content: space-between;
       gap: 15px;
-
-      margin-bottom: 19px;
+      margin-bottom: 20px;
     }
 
-    .questao-numero {
+    .numero {
       color: var(--dourado2);
-
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .dificuldade {
       padding: 6px 10px;
-
       border-radius: 999px;
-
       color: var(--cinza);
-
       background: rgba(255,255,255,.06);
-
       font-size: 11px;
       font-weight: 700;
     }
 
     .enunciado {
       color: var(--texto);
-
       font-size: 17px;
       line-height: 1.7;
-
       white-space: pre-line;
     }
 
     .alternativas {
+      margin-top: 23px;
       display: grid;
       gap: 10px;
-
-      margin-top: 24px;
     }
 
     .alternativa {
       width: 100%;
-
+      padding: 14px;
       display: flex;
       align-items: flex-start;
       gap: 12px;
-
-      padding: 15px;
-
-      text-align: left;
-
       border: 1px solid var(--borda);
       border-radius: 11px;
-
+      text-align: left;
       color: var(--texto);
-
       background: rgba(255,255,255,.035);
-
-      transition: .18s ease;
     }
 
     .alternativa:hover:not(:disabled) {
@@ -397,63 +297,46 @@
     }
 
     .letra {
-      flex: 0 0 29px;
-
-      width: 29px;
-      height: 29px;
-
+      flex: 0 0 30px;
+      width: 30px;
+      height: 30px;
       display: grid;
       place-items: center;
-
       border-radius: 8px;
-
       color: var(--dourado2);
-
-      background: rgba(215,168,62,.12);
-
+      background: rgba(215,168,62,.13);
       font-size: 12px;
       font-weight: 900;
     }
 
     .alternativa.correta {
-      border-color: rgba(57,201,141,.65);
-      background: rgba(57,201,141,.11);
+      border-color: var(--verde);
+      background: rgba(57,201,141,.10);
     }
 
     .alternativa.errada {
-      border-color: rgba(239,100,100,.65);
+      border-color: var(--vermelho);
       background: rgba(239,100,100,.10);
-    }
-
-    .alternativa:disabled {
-      cursor: default;
     }
 
     .resultado {
       display: none;
-
-      margin-top: 23px;
+      margin-top: 22px;
       padding: 17px;
-
       border-radius: 12px;
-
       line-height: 1.6;
     }
 
     .resultado.acerto {
       display: block;
-
-      border: 1px solid rgba(57,201,141,.28);
-
+      border: 1px solid rgba(57,201,141,.35);
       background: rgba(57,201,141,.09);
     }
 
     .resultado.erro {
       display: block;
-
-      border: 1px solid rgba(239,100,100,.28);
-
-      background: rgba(239,100,100,.08);
+      border: 1px solid rgba(239,100,100,.35);
+      background: rgba(239,100,100,.09);
     }
 
     .resultado-titulo {
@@ -462,25 +345,19 @@
 
     .explicacao {
       margin-top: 12px;
-
       color: var(--texto);
-
       font-size: 14px;
     }
 
     .base-legal {
       margin-top: 10px;
-
       color: var(--cinza);
-
       font-size: 12px;
     }
 
     .acoes {
       display: none;
-
       margin-top: 20px;
-
       gap: 10px;
       flex-wrap: wrap;
     }
@@ -489,127 +366,65 @@
       display: flex;
     }
 
-    .btn-secundario,
+    .btn-revisao,
     .btn-proxima {
       min-height: 43px;
-
       padding: 0 16px;
-
       border-radius: 9px;
-
       font-weight: 800;
     }
 
-    .btn-secundario {
+    .btn-revisao {
       border: 1px solid var(--borda);
-
       color: var(--texto);
-
       background: rgba(255,255,255,.05);
     }
 
     .btn-proxima {
       margin-left: auto;
-
       border: none;
-
       color: var(--fundo);
-
       background: var(--dourado2);
     }
 
-    .mensagem {
-      padding: 24px;
-
-      text-align: center;
-
-      border: 1px dashed var(--borda);
-      border-radius: 15px;
-
-      color: var(--cinza);
-
-      background: rgba(255,255,255,.025);
-    }
-
-    .mensagem.erro {
-      color: #ffc8c8;
-
-      border-color: rgba(239,100,100,.30);
-    }
-
     @media (max-width: 900px) {
-
       .filtros {
         grid-template-columns: 1fr 1fr;
-      }
-
-      .btn-carregar {
-        width: 100%;
       }
     }
 
     @media (max-width: 650px) {
-
       header {
-        height: auto;
         min-height: 65px;
         padding: 10px 4vw;
-        gap: 10px;
-        flex-wrap: wrap;
       }
 
+      .usuario,
       .logo-texto span,
-      .usuario {
-        display: none;
-      }
-
-      .logo-marca {
-        width: 38px;
-        height: 38px;
-      }
-
-      .topo-direita {
-        margin-left: auto;
-      }
-
       .btn-area {
         display: none;
       }
 
       .container {
         width: 94%;
-        margin-top: 22px;
+        margin-top: 25px;
       }
 
       .filtros {
         grid-template-columns: 1fr;
-
-        padding: 15px;
       }
 
       .stats {
         grid-template-columns: 1fr 1fr;
       }
 
-      .questao-card {
-        border-radius: 15px;
-      }
-
-      .enunciado {
-        font-size: 16px;
-      }
-
-      .alternativa {
-        padding: 13px;
-      }
-
-      .btn-proxima {
-        margin-left: 0;
+      .btn-buscar {
         width: 100%;
       }
 
-      .btn-secundario {
-        flex: 1;
+      .btn-proxima {
+        width: 100%;
+        margin-left: 0;
       }
     }
   </style>
@@ -617,921 +432,730 @@
 
 <body>
 
-  <header>
+<header>
 
-    <div class="logo">
+  <div class="logo">
 
-      <div class="logo-marca">
-        R
-      </div>
+    <div class="logo-marca">
+      R
+    </div>
 
-      <div class="logo-texto">
-        <strong>ROH Concursos</strong>
-        <span>Área do aluno</span>
-      </div>
+    <div class="logo-texto">
+      <strong>ROH Concursos</strong>
+      <span>Área do aluno</span>
+    </div>
+
+  </div>
+
+  <div class="topo-direita">
+
+    <a
+      href="area.html"
+      class="btn-topo btn-area"
+    >
+      Área do aluno
+    </a>
+
+    <span
+      id="usuarioEmail"
+      class="usuario"
+    >
+      Carregando...
+    </span>
+
+    <button
+      id="btnSair"
+      class="btn-topo"
+      type="button"
+    >
+      Sair
+    </button>
+
+  </div>
+
+</header>
+
+<main class="container">
+
+  <section class="cabecalho">
+
+    <span>Banco de questões</span>
+
+    <h1>Pratique por assunto</h1>
+
+    <p>
+      Escolha seu cargo, disciplina e assunto
+      para iniciar seus estudos.
+    </p>
+
+  </section>
+
+  <section class="filtros">
+
+    <div class="campo">
+
+      <label for="cargo">
+        Cargo
+      </label>
+
+      <select id="cargo">
+        <option value="">
+          Carregando cargos...
+        </option>
+      </select>
 
     </div>
 
-    <div class="topo-direita">
+    <div class="campo">
 
-      <a
-        class="btn-area"
-        href="area.html"
-      >
-        Área do aluno
-      </a>
+      <label for="disciplina">
+        Disciplina
+      </label>
 
-      <span
-        class="usuario"
-        id="usuarioEmail"
-      >
-        Carregando...
-      </span>
-
-      <button
-        class="btn-sair"
-        id="btnSair"
-        type="button"
-      >
-        Sair
-      </button>
-
-    </div>
-
-  </header>
-
-  <main class="container">
-
-    <div class="cabecalho-pagina">
-
-      <span>Banco de questões</span>
-
-      <h1>Pratique por assunto</h1>
-
-      <p>
-        Escolha seu cargo, disciplina e assunto
-        para iniciar seus estudos.
-      </p>
-
-    </div>
-
-    <section class="filtros">
-
-      <div class="campo">
-
-        <label for="cargo">
-          Cargo
-        </label>
-
-        <select id="cargo">
-          <option value="">
-            Carregando cargos...
-          </option>
-        </select>
-
-      </div>
-
-      <div class="campo">
-
-        <label for="disciplina">
-          Disciplina
-        </label>
-
-        <select
-          id="disciplina"
-          disabled
-        >
-          <option value="">
-            Selecione o cargo
-          </option>
-        </select>
-
-      </div>
-
-      <div class="campo">
-
-        <label for="assunto">
-          Assunto
-        </label>
-
-        <select
-          id="assunto"
-          disabled
-        >
-          <option value="">
-            Todos os assuntos
-          </option>
-        </select>
-
-      </div>
-
-      <button
-        class="btn-carregar"
-        id="btnCarregar"
-        type="button"
+      <select
+        id="disciplina"
         disabled
       >
-        Buscar questões
-      </button>
+        <option value="">
+          Selecione o cargo
+        </option>
+      </select>
 
-    </section>
-
-    <section class="stats">
-
-      <div class="stat">
-        <span>Respondidas</span>
-        <strong id="statRespondidas">0</strong>
-      </div>
-
-      <div class="stat">
-        <span>Acertos</span>
-        <strong id="statAcertos">0</strong>
-      </div>
-
-      <div class="stat">
-        <span>Erros</span>
-        <strong id="statErros">0</strong>
-      </div>
-
-      <div class="stat">
-        <span>Aproveitamento</span>
-        <strong id="statPercentual">0%</strong>
-      </div>
-
-    </section>
-
-    <div
-      class="mensagem"
-      id="mensagem"
-    >
-      Selecione um cargo para começar.
     </div>
 
-    <article
-      class="questao-card"
-      id="questaoCard"
+    <div class="campo">
+
+      <label for="assunto">
+        Assunto
+      </label>
+
+      <select
+        id="assunto"
+        disabled
+      >
+        <option value="">
+          Todos os assuntos
+        </option>
+      </select>
+
+    </div>
+
+    <button
+      id="btnBuscar"
+      class="btn-buscar"
+      type="button"
+      disabled
+    >
+      Buscar questões
+    </button>
+
+  </section>
+
+  <section class="stats">
+
+    <div class="stat">
+      <span>Respondidas</span>
+      <strong id="statRespondidas">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Acertos</span>
+      <strong id="statAcertos">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Erros</span>
+      <strong id="statErros">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Aproveitamento</span>
+      <strong id="statPercentual">0%</strong>
+    </div>
+
+  </section>
+
+  <div
+    id="mensagem"
+    class="mensagem"
+  >
+    Carregando...
+  </div>
+
+  <article
+    id="questaoCard"
+    class="questao-card"
+  >
+
+    <div class="questao-topo">
+
+      <div
+        id="questaoNumero"
+        class="numero"
+      ></div>
+
+      <div
+        id="questaoDificuldade"
+        class="dificuldade"
+      ></div>
+
+    </div>
+
+    <div
+      id="enunciado"
+      class="enunciado"
+    ></div>
+
+    <div
+      id="alternativas"
+      class="alternativas"
+    ></div>
+
+    <div
+      id="resultado"
+      class="resultado"
+    ></div>
+
+    <div
+      id="acoes"
+      class="acoes"
     >
 
-      <div class="questao-topo">
-
-        <div
-          class="questao-numero"
-          id="questaoNumero"
-        ></div>
-
-        <div
-          class="dificuldade"
-          id="questaoDificuldade"
-        ></div>
-
-      </div>
-
-      <div
-        class="enunciado"
-        id="enunciado"
-      ></div>
-
-      <div
-        class="alternativas"
-        id="alternativas"
-      ></div>
-
-      <div
-        class="resultado"
-        id="resultado"
-      ></div>
-
-      <div
-        class="acoes"
-        id="acoes"
+      <button
+        id="btnRevisao"
+        class="btn-revisao"
+        type="button"
       >
+        ☆ Marcar para revisão
+      </button>
 
-        <button
-          class="btn-secundario"
-          id="btnRevisao"
-          type="button"
-        >
-          ☆ Marcar para revisão
-        </button>
+      <button
+        id="btnProxima"
+        class="btn-proxima"
+        type="button"
+      >
+        Próxima questão →
+      </button>
 
-        <button
-          class="btn-proxima"
-          id="btnProxima"
-          type="button"
-        >
-          Próxima questão →
-        </button>
+    </div>
 
-      </div>
+  </article>
 
-    </article>
+</main>
 
-  </main>
+<script>
+  const SUPABASE_URL =
+    "https://tvbnkjirfryluhxwpnna.supabase.co";
 
-  <script>
+  const SUPABASE_KEY =
+    "sb_publishable_rCGzxynHFKgEeajIAWHNAw_7Qyw9HD_";
 
-    const SUPABASE_URL =
-      "https://tvbnkjirfryluhxwpnna.supabase.co";
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-    const SUPABASE_KEY =
-      "sb_publishable_rCGzxynHFKgEeajIAWHNAw_7Qyw9HD_";
+  const cargoSelect =
+    document.getElementById("cargo");
 
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
+  const disciplinaSelect =
+    document.getElementById("disciplina");
+
+  const assuntoSelect =
+    document.getElementById("assunto");
+
+  const btnBuscar =
+    document.getElementById("btnBuscar");
+
+  const btnSair =
+    document.getElementById("btnSair");
+
+  const usuarioEmail =
+    document.getElementById("usuarioEmail");
+
+  const mensagem =
+    document.getElementById("mensagem");
+
+  const questaoCard =
+    document.getElementById("questaoCard");
+
+  const questaoNumero =
+    document.getElementById("questaoNumero");
+
+  const questaoDificuldade =
+    document.getElementById("questaoDificuldade");
+
+  const enunciado =
+    document.getElementById("enunciado");
+
+  const alternativas =
+    document.getElementById("alternativas");
+
+  const resultado =
+    document.getElementById("resultado");
+
+  const acoes =
+    document.getElementById("acoes");
+
+  const btnRevisao =
+    document.getElementById("btnRevisao");
+
+  const btnProxima =
+    document.getElementById("btnProxima");
+
+  const statRespondidas =
+    document.getElementById("statRespondidas");
+
+  const statAcertos =
+    document.getElementById("statAcertos");
+
+  const statErros =
+    document.getElementById("statErros");
+
+  const statPercentual =
+    document.getElementById("statPercentual");
+
+  let questoes = [];
+  let indiceAtual = 0;
+  let questaoAtual = null;
+  let respondida = false;
+
+  let stats = {
+    respondidas: 0,
+    acertos: 0,
+    erros: 0
+  };
+
+  function texto(valor) {
+    if (
+      valor === null ||
+      valor === undefined
+    ) {
+      return "";
+    }
+
+    return String(valor);
+  }
+
+  function mostrarMensagem(
+    textoMensagem,
+    erro = false
+  ) {
+    questaoCard.style.display =
+      "none";
+
+    mensagem.style.display =
+      "block";
+
+    mensagem.textContent =
+      textoMensagem;
+
+    mensagem.className =
+      erro
+        ? "mensagem erro"
+        : "mensagem";
+  }
+
+  function esconderMensagem() {
+    mensagem.style.display =
+      "none";
+  }
+
+  function atualizarStats() {
+    statRespondidas.textContent =
+      stats.respondidas;
+
+    statAcertos.textContent =
+      stats.acertos;
+
+    statErros.textContent =
+      stats.erros;
+
+    const percentual =
+      stats.respondidas
+        ? Math.round(
+            (
+              stats.acertos /
+              stats.respondidas
+            ) * 100
+          )
+        : 0;
+
+    statPercentual.textContent =
+      percentual + "%";
+  }
+
+  async function verificarUsuario() {
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+    if (
+      error ||
+      !data.session
+    ) {
+      window.location.href =
+        "login.html";
+
+      return false;
+    }
+
+    usuarioEmail.textContent =
+      data.session.user.email ||
+      "Aluno";
+
+    const {
+      data: ativo,
+      error: erroAtivo
+    } =
+      await supabaseClient.rpc(
+        "roh_usuario_ativo"
       );
 
-    const cargoSelect =
-      document.getElementById("cargo");
-
-    const disciplinaSelect =
-      document.getElementById("disciplina");
-
-    const assuntoSelect =
-      document.getElementById("assunto");
-
-    const btnCarregar =
-      document.getElementById("btnCarregar");
-
-    const btnSair =
-      document.getElementById("btnSair");
-
-    const usuarioEmail =
-      document.getElementById("usuarioEmail");
-
-    const mensagem =
-      document.getElementById("mensagem");
-
-    const questaoCard =
-      document.getElementById("questaoCard");
-
-    const questaoNumero =
-      document.getElementById("questaoNumero");
-
-    const questaoDificuldade =
-      document.getElementById("questaoDificuldade");
-
-    const enunciado =
-      document.getElementById("enunciado");
-
-    const alternativas =
-      document.getElementById("alternativas");
-
-    const resultado =
-      document.getElementById("resultado");
-
-    const acoes =
-      document.getElementById("acoes");
-
-    const btnRevisao =
-      document.getElementById("btnRevisao");
-
-    const btnProxima =
-      document.getElementById("btnProxima");
-
-    const statRespondidas =
-      document.getElementById("statRespondidas");
-
-    const statAcertos =
-      document.getElementById("statAcertos");
-
-    const statErros =
-      document.getElementById("statErros");
-
-    const statPercentual =
-      document.getElementById("statPercentual");
-
-    let usuarioAtual = null;
-
-    let questoes = [];
-
-    let indiceAtual = 0;
-
-    let questaoAtual = null;
-
-    let respondida = false;
-
-    let estatisticas = {
-      respondidas: 0,
-      acertos: 0,
-      erros: 0
-    };
-
-    function textoSeguro(valor) {
-
-      if (
-        valor === null ||
-        valor === undefined
-      ) {
-        return "";
-      }
-
-      return String(valor);
-    }
-
-    function mostrarMensagem(
-      texto,
-      erro = false
+    if (
+      erroAtivo ||
+      ativo !== true
     ) {
+      await supabaseClient.auth.signOut();
 
-      questaoCard.style.display =
-        "none";
+      alert(
+        "Seu acesso à ROH Concursos não está ativo."
+      );
 
-      mensagem.style.display =
-        "block";
+      window.location.href =
+        "login.html";
 
-      mensagem.textContent =
-        texto;
-
-      mensagem.className =
-        erro
-          ? "mensagem erro"
-          : "mensagem";
+      return false;
     }
 
-    function esconderMensagem() {
+    return true;
+  }
 
-      mensagem.style.display =
-        "none";
-    }
+  async function carregarOpcoes(
+    cargoId = null,
+    disciplinaId = null
+  ) {
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "roh_opcoes_estudo_v1",
+        {
+          p_cargo_id:
+            cargoId
+              ? Number(cargoId)
+              : null,
 
-    function atualizarEstatisticas() {
-
-      statRespondidas.textContent =
-        estatisticas.respondidas;
-
-      statAcertos.textContent =
-        estatisticas.acertos;
-
-      statErros.textContent =
-        estatisticas.erros;
-
-      const percentual =
-        estatisticas.respondidas
-          ? Math.round(
-              (
-                estatisticas.acertos /
-                estatisticas.respondidas
-              ) * 100
-            )
-          : 0;
-
-      statPercentual.textContent =
-        percentual + "%";
-    }
-
-    async function verificarUsuario() {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .auth
-          .getSession();
-
-      if (
-        error ||
-        !data.session
-      ) {
-
-        window.location.href =
-          "login.html";
-
-        return false;
-      }
-
-      usuarioAtual =
-        data.session.user;
-
-      usuarioEmail.textContent =
-        usuarioAtual.email || "Aluno";
-
-      try {
-
-        const {
-          data: ativo,
-          error: erroAtivo
-        } =
-          await supabaseClient
-            .rpc(
-              "roh_usuario_ativo"
-            );
-
-        if (
-          erroAtivo ||
-          ativo !== true
-        ) {
-
-          await supabaseClient
-            .auth
-            .signOut();
-
-          alert(
-            "Seu acesso à ROH Concursos não está ativo."
-          );
-
-          window.location.href =
-            "login.html";
-
-          return false;
+          p_disciplina_id:
+            disciplinaId
+              ? Number(disciplinaId)
+              : null
         }
+      );
 
-      } catch (erro) {
-
-        console.error(
-          "Erro ao verificar usuário:",
-          erro
-        );
-
-        return false;
-      }
-
-      return true;
-    }
-
-    async function carregarOpcoes(
-      cargoId = null,
-      disciplinaId = null
-    ) {
-
-      const {
-        data,
+    if (error) {
+      console.error(
+        "ROH opções:",
         error
-      } =
-        await supabaseClient
-          .rpc(
-            "roh_opcoes_estudo_v1",
-            {
-              p_cargo_id:
-                cargoId
-                  ? Number(cargoId)
-                  : null,
-
-              p_disciplina_id:
-                disciplinaId
-                  ? Number(disciplinaId)
-                  : null
-            }
-          );
-
-      if (error) {
-
-        console.error(
-          "ROH opções:",
-          error
-        );
-
-        throw error;
-      }
-
-      return data || {
-        cargos: [],
-        disciplinas: [],
-        assuntos: []
-      };
-    }
-
-    function obterIdCargo(item) {
-
-      return (
-        item.cargo_id ??
-        item.id ??
-        null
       );
+
+      throw error;
     }
 
-    function obterNomeCargo(item) {
+    return data || {
+      cargos: [],
+      disciplinas: [],
+      assuntos: []
+    };
+  }
 
-      return textoSeguro(
-        item.cargo_nome ??
-        item.nome ??
-        item.cargo ??
-        ""
+  function criarOption(
+    id,
+    nome
+  ) {
+    const option =
+      document.createElement(
+        "option"
       );
-    }
 
-    function obterIdDisciplina(item) {
+    option.value =
+      String(id);
 
-      return (
-        item.disciplina_id ??
-        item.id ??
-        null
-      );
-    }
+    option.textContent =
+      nome;
 
-    function obterNomeDisciplina(item) {
+    return option;
+  }
 
-      return textoSeguro(
-        item.disciplina_nome ??
-        item.nome ??
-        item.disciplina ??
-        ""
-      );
-    }
+  async function carregarCargos() {
+    cargoSelect.disabled =
+      true;
 
-    function obterIdAssunto(item) {
+    cargoSelect.innerHTML =
+      '<option value="">Carregando...</option>';
 
-      return (
-        item.assunto_id ??
-        item.id ??
-        null
-      );
-    }
+    try {
+      const dados =
+        await carregarOpcoes();
 
-    function obterNomeAssunto(item) {
-
-      return textoSeguro(
-        item.assunto_nome ??
-        item.nome ??
-        item.assunto ??
-        ""
-      );
-    }
-
-    function preencherCargos(itens) {
+      const cargos =
+        Array.isArray(dados.cargos)
+          ? dados.cargos
+          : [];
 
       cargoSelect.innerHTML =
         '<option value="">Selecione seu cargo</option>';
 
-      const usados =
-        new Set();
-
-      itens.forEach(item => {
-
+      cargos.forEach(item => {
         const id =
-          obterIdCargo(item);
+          item.cargo_id ??
+          item.id;
 
         const nome =
-          obterNomeCargo(item);
+          item.cargo_nome ??
+          item.nome ??
+          item.cargo;
 
         if (
-          id === null ||
-          !nome
+          id !== undefined &&
+          id !== null &&
+          nome
         ) {
-          return;
-        }
-
-        const chave =
-          String(id);
-
-        if (
-          usados.has(chave)
-        ) {
-          return;
-        }
-
-        usados.add(chave);
-
-        const option =
-          document.createElement(
-            "option"
+          cargoSelect.appendChild(
+            criarOption(
+              id,
+              nome
+            )
           );
-
-        option.value =
-          chave;
-
-        option.textContent =
-          nome;
-
-        cargoSelect.appendChild(
-          option
-        );
+        }
       });
-    }
 
-    function preencherDisciplinas(itens) {
+      cargoSelect.disabled =
+        false;
+
+      if (!cargos.length) {
+        mostrarMensagem(
+          "Nenhum cargo foi encontrado para sua conta."
+        );
+
+        return;
+      }
+
+      mostrarMensagem(
+        "Selecione seu cargo para começar."
+      );
+
+    } catch (erro) {
+      console.error(erro);
+
+      mostrarMensagem(
+        "Não foi possível carregar seus cargos.",
+        true
+      );
+    }
+  }
+
+  cargoSelect.addEventListener(
+    "change",
+    async () => {
+      const cargoId =
+        cargoSelect.value;
+
+      disciplinaSelect.disabled =
+        true;
+
+      assuntoSelect.disabled =
+        true;
+
+      btnBuscar.disabled =
+        true;
 
       disciplinaSelect.innerHTML =
-        '<option value="">Selecione a disciplina</option>';
-
-      const usados =
-        new Set();
-
-      itens.forEach(item => {
-
-        const id =
-          obterIdDisciplina(item);
-
-        const nome =
-          obterNomeDisciplina(item);
-
-        if (
-          id === null ||
-          !nome
-        ) {
-          return;
-        }
-
-        const chave =
-          String(id);
-
-        if (
-          usados.has(chave)
-        ) {
-          return;
-        }
-
-        usados.add(chave);
-
-        const option =
-          document.createElement(
-            "option"
-          );
-
-        option.value =
-          chave;
-
-        option.textContent =
-          nome;
-
-        disciplinaSelect.appendChild(
-          option
-        );
-      });
-    }
-
-    function preencherAssuntos(itens) {
+        '<option value="">Selecione o cargo</option>';
 
       assuntoSelect.innerHTML =
         '<option value="">Todos os assuntos</option>';
 
-      const usados =
-        new Set();
-
-      itens.forEach(item => {
-
-        const id =
-          obterIdAssunto(item);
-
-        const nome =
-          obterNomeAssunto(item);
-
-        if (
-          id === null ||
-          !nome
-        ) {
-          return;
-        }
-
-        const chave =
-          String(id);
-
-        if (
-          usados.has(chave)
-        ) {
-          return;
-        }
-
-        usados.add(chave);
-
-        const option =
-          document.createElement(
-            "option"
-          );
-
-        option.value =
-          chave;
-
-        option.textContent =
-          nome;
-
-        assuntoSelect.appendChild(
-          option
+      if (!cargoId) {
+        mostrarMensagem(
+          "Selecione seu cargo para começar."
         );
-      });
-    }
 
-    async function carregarCargos() {
+        return;
+      }
 
-      cargoSelect.innerHTML =
-        '<option value="">Carregando...</option>';
-
-      cargoSelect.disabled =
-        true;
+      mostrarMensagem(
+        "Carregando disciplinas..."
+      );
 
       try {
-
         const dados =
           await carregarOpcoes(
-            null,
+            cargoId,
             null
           );
 
-        const cargos =
+        const disciplinas =
           Array.isArray(
-            dados.cargos
+            dados.disciplinas
           )
-            ? dados.cargos
+            ? dados.disciplinas
             : [];
 
-        preencherCargos(
-          cargos
-        );
+        disciplinaSelect.innerHTML =
+          '<option value="">Selecione a disciplina</option>';
 
-        cargoSelect.disabled =
+        disciplinas.forEach(item => {
+          const id =
+            item.disciplina_id ??
+            item.id;
+
+          const nome =
+            item.disciplina_nome ??
+            item.nome ??
+            item.disciplina;
+
+          if (
+            id !== undefined &&
+            id !== null &&
+            nome
+          ) {
+            disciplinaSelect.appendChild(
+              criarOption(
+                id,
+                nome
+              )
+            );
+          }
+        });
+
+        disciplinaSelect.disabled =
           false;
 
-        if (!cargos.length) {
-
+        if (!disciplinas.length) {
           mostrarMensagem(
-            "Nenhum cargo foi encontrado para sua conta."
+            "Nenhuma disciplina foi encontrada para este cargo."
           );
 
           return;
         }
 
         mostrarMensagem(
-          "Selecione um cargo para começar."
+          "Agora selecione uma disciplina."
         );
 
       } catch (erro) {
-
-        console.error(
-          "ROH cargos:",
-          erro
-        );
+        console.error(erro);
 
         mostrarMensagem(
-          "Não foi possível carregar seus cargos.",
+          "Não foi possível carregar as disciplinas.",
           true
         );
       }
     }
+  );
 
-    cargoSelect.addEventListener(
-      "change",
-      async () => {
+  disciplinaSelect.addEventListener(
+    "change",
+    async () => {
+      const cargoId =
+        cargoSelect.value;
 
-        disciplinaSelect.innerHTML =
-          '<option value="">Carregando...</option>';
+      const disciplinaId =
+        disciplinaSelect.value;
 
-        disciplinaSelect.disabled =
-          true;
+      assuntoSelect.disabled =
+        true;
+
+      btnBuscar.disabled =
+        true;
+
+      assuntoSelect.innerHTML =
+        '<option value="">Todos os assuntos</option>';
+
+      if (!disciplinaId) {
+        mostrarMensagem(
+          "Selecione uma disciplina."
+        );
+
+        return;
+      }
+
+      mostrarMensagem(
+        "Carregando assuntos..."
+      );
+
+      try {
+        const dados =
+          await carregarOpcoes(
+            cargoId,
+            disciplinaId
+          );
+
+        const assuntos =
+          Array.isArray(
+            dados.assuntos
+          )
+            ? dados.assuntos
+            : [];
 
         assuntoSelect.innerHTML =
           '<option value="">Todos os assuntos</option>';
 
-        assuntoSelect.disabled =
-          true;
+        assuntos.forEach(item => {
+          const id =
+            item.assunto_id ??
+            item.id;
 
-        btnCarregar.disabled =
-          true;
+          const nome =
+            item.assunto_nome ??
+            item.nome ??
+            item.assunto;
 
-        questaoCard.style.display =
-          "none";
-
-        const cargoId =
-          cargoSelect.value;
-
-        if (!cargoId) {
-
-          disciplinaSelect.innerHTML =
-            '<option value="">Selecione o cargo</option>';
-
-          mostrarMensagem(
-            "Selecione um cargo para começar."
-          );
-
-          return;
-        }
-
-        mostrarMensagem(
-          "Carregando disciplinas..."
-        );
-
-        try {
-
-          const dados =
-            await carregarOpcoes(
-              cargoId,
-              null
+          if (
+            id !== undefined &&
+            id !== null &&
+            nome
+          ) {
+            assuntoSelect.appendChild(
+              criarOption(
+                id,
+                nome
+              )
             );
-
-          const disciplinas =
-            Array.isArray(
-              dados.disciplinas
-            )
-              ? dados.disciplinas
-              : [];
-
-          preencherDisciplinas(
-            disciplinas
-          );
-
-          disciplinaSelect.disabled =
-            false;
-
-          if (!disciplinas.length) {
-
-            mostrarMensagem(
-              "Nenhuma disciplina foi encontrada para esse cargo."
-            );
-
-            return;
           }
-
-          mostrarMensagem(
-            "Agora selecione uma disciplina."
-          );
-
-        } catch (erro) {
-
-          console.error(
-            "ROH disciplinas:",
-            erro
-          );
-
-          mostrarMensagem(
-            "Não foi possível carregar as disciplinas.",
-            true
-          );
-        }
-      }
-    );
-
-    disciplinaSelect.addEventListener(
-      "change",
-      async () => {
-
-        assuntoSelect.innerHTML =
-          '<option value="">Todos os assuntos</option>';
+        });
 
         assuntoSelect.disabled =
-          true;
+          false;
 
-        btnCarregar.disabled =
-          true;
-
-        questaoCard.style.display =
-          "none";
-
-        const cargoId =
-          cargoSelect.value;
-
-        const disciplinaId =
-          disciplinaSelect.value;
-
-        if (!disciplinaId) {
-
-          mostrarMensagem(
-            "Selecione uma disciplina."
-          );
-
-          return;
-        }
+        btnBuscar.disabled =
+          false;
 
         mostrarMensagem(
-          "Carregando assuntos..."
+          "Escolha um assunto ou mantenha “Todos os assuntos” e clique em Buscar questões."
         );
 
-        try {
+      } catch (erro) {
+        console.error(erro);
 
-          const dados =
-            await carregarOpcoes(
-              cargoId,
-              disciplinaId
-            );
-
-          const assuntos =
-            Array.isArray(
-              dados.assuntos
-            )
-              ? dados.assuntos
-              : [];
-
-          preencherAssuntos(
-            assuntos
-          );
-
-          assuntoSelect.disabled =
-            false;
-
-          btnCarregar.disabled =
-            false;
-
-          mostrarMensagem(
-            "Escolha um assunto ou mantenha “Todos os assuntos” e clique em Buscar questões."
-          );
-
-        } catch (erro) {
-
-          console.error(
-            "ROH assuntos:",
-            erro
-          );
-
-          mostrarMensagem(
-            "Não foi possível carregar os assuntos.",
-            true
-          );
-        }
+        mostrarMensagem(
+          "Não foi possível carregar os assuntos.",
+          true
+        );
       }
-    );
+    }
+  );
 
-    async function buscarQuestoes() {
-
+  btnBuscar.addEventListener(
+    "click",
+    async () => {
       const cargoId =
         cargoSelect.value;
 
@@ -1545,7 +1169,6 @@
         !cargoId ||
         !disciplinaId
       ) {
-
         mostrarMensagem(
           "Selecione cargo e disciplina.",
           true
@@ -1554,10 +1177,10 @@
         return;
       }
 
-      btnCarregar.disabled =
+      btnBuscar.disabled =
         true;
 
-      btnCarregar.textContent =
+      btnBuscar.textContent =
         "Buscando...";
 
       mostrarMensagem(
@@ -1565,53 +1188,57 @@
       );
 
       try {
-
         const {
           data,
           error
         } =
-          await supabaseClient
-            .rpc(
-              "roh_listar_questoes_estudo_v1",
-              {
-                p_cargo_id:
-                  Number(cargoId),
+          await supabaseClient.rpc(
+            "roh_listar_questoes_estudo_v1",
+            {
+              p_cargo_id:
+                Number(cargoId),
 
-                p_disciplina_id:
-                  Number(disciplinaId),
+              p_disciplina_id:
+                Number(disciplinaId),
 
-                p_assunto_id:
-                  assuntoId
-                    ? Number(assuntoId)
-                    : null,
+              p_assunto_id:
+                assuntoId
+                  ? Number(assuntoId)
+                  : null,
 
-                p_dificuldade:
-                  null,
+              p_dificuldade:
+                null,
 
-                p_limite:
-                  50,
+              p_limite:
+                50,
 
-                p_somente_nao_respondidas:
-                  false,
+              p_somente_nao_respondidas:
+                false,
 
-                p_embaralhar:
-                  true
-              }
-            );
+              p_embaralhar:
+                true
+            }
+          );
 
         if (error) {
           throw error;
         }
 
-        questoes =
-          Array.isArray(data)
-            ? data
-            : [];
+        if (Array.isArray(data)) {
+          questoes = data;
+        } else if (
+          data &&
+          Array.isArray(data.questoes)
+        ) {
+          questoes =
+            data.questoes;
+        } else {
+          questoes = [];
+        }
 
         indiceAtual = 0;
 
         if (!questoes.length) {
-
           mostrarMensagem(
             "Nenhuma questão disponível para os filtros selecionados."
           );
@@ -1622,7 +1249,6 @@
         exibirQuestao();
 
       } catch (erro) {
-
         console.error(
           "ROH questões:",
           erro
@@ -1634,542 +1260,488 @@
         );
 
       } finally {
-
-        btnCarregar.disabled =
+        btnBuscar.disabled =
           false;
 
-        btnCarregar.textContent =
+        btnBuscar.textContent =
           "Buscar questões";
       }
     }
+  );
 
-    btnCarregar.addEventListener(
-      "click",
-      buscarQuestoes
+  function normalizarQuestao(q) {
+    const lista = [];
+
+    const alternativasObjeto =
+      q.alternativas &&
+      typeof q.alternativas === "object"
+        ? q.alternativas
+        : {};
+
+    ["A", "B", "C", "D", "E"]
+      .forEach(letra => {
+        const minuscula =
+          letra.toLowerCase();
+
+        const valor =
+          q["alternativa_" + minuscula]
+          ??
+          q["alternativa_" + letra]
+          ??
+          q["alternativa" + letra]
+          ??
+          alternativasObjeto[letra]
+          ??
+          alternativasObjeto[minuscula]
+          ??
+          null;
+
+        if (
+          valor !== null &&
+          valor !== undefined &&
+          String(valor).trim() !== ""
+        ) {
+          lista.push({
+            letra,
+            texto: String(valor)
+          });
+        }
+      });
+
+    return {
+      id:
+        q.questao_id ??
+        q.id,
+
+      enunciado:
+        texto(
+          q.enunciado ??
+          q.questao ??
+          q.texto
+        ),
+
+      dificuldade:
+        texto(
+          q.dificuldade ??
+          ""
+        ),
+
+      alternativas:
+        lista
+    };
+  }
+
+  function exibirQuestao() {
+    if (
+      indiceAtual >=
+      questoes.length
+    ) {
+      mostrarMensagem(
+        "Você concluiu as questões carregadas."
+      );
+
+      return;
+    }
+
+    questaoAtual =
+      normalizarQuestao(
+        questoes[indiceAtual]
+      );
+
+    respondida = false;
+
+    esconderMensagem();
+
+    questaoCard.style.display =
+      "block";
+
+    questaoNumero.textContent =
+      "Questão " +
+      (indiceAtual + 1) +
+      " de " +
+      questoes.length;
+
+    questaoDificuldade.textContent =
+      questaoAtual.dificuldade ||
+      "Questão";
+
+    enunciado.textContent =
+      questaoAtual.enunciado;
+
+    alternativas.innerHTML = "";
+
+    resultado.innerHTML = "";
+
+    resultado.className =
+      "resultado";
+
+    acoes.className =
+      "acoes";
+
+    btnRevisao.textContent =
+      "☆ Marcar para revisão";
+
+    questaoAtual.alternativas
+      .forEach(opcao => {
+        const botao =
+          document.createElement(
+            "button"
+          );
+
+        botao.type =
+          "button";
+
+        botao.className =
+          "alternativa";
+
+        botao.dataset.letra =
+          opcao.letra;
+
+        const letra =
+          document.createElement(
+            "span"
+          );
+
+        letra.className =
+          "letra";
+
+        letra.textContent =
+          opcao.letra;
+
+        const descricao =
+          document.createElement(
+            "span"
+          );
+
+        descricao.textContent =
+          opcao.texto;
+
+        botao.appendChild(
+          letra
+        );
+
+        botao.appendChild(
+          descricao
+        );
+
+        botao.addEventListener(
+          "click",
+          () =>
+            responderQuestao(
+              opcao.letra
+            )
+        );
+
+        alternativas.appendChild(
+          botao
+        );
+      });
+
+    window.scrollTo({
+      top:
+        Math.max(
+          questaoCard.offsetTop - 100,
+          0
+        ),
+      behavior: "smooth"
+    });
+  }
+
+  async function responderQuestao(
+    respostaAluno
+  ) {
+    if (
+      respondida ||
+      !questaoAtual
+    ) {
+      return;
+    }
+
+    const botoes =
+      alternativas.querySelectorAll(
+        ".alternativa"
+      );
+
+    botoes.forEach(
+      botao =>
+        botao.disabled = true
     );
 
-    function normalizarQuestao(q) {
+    try {
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.rpc(
+          "roh_responder_questao",
+          {
+            p_questao_id:
+              Number(
+                questaoAtual.id
+              ),
 
-      const opcoes = [];
+            p_resposta:
+              respostaAluno,
 
-      const alternativasObjeto =
-        q.alternativas &&
-        typeof q.alternativas === "object"
-          ? q.alternativas
-          : null;
-
-      ["A", "B", "C", "D", "E"]
-        .forEach(letra => {
-
-          const minuscula =
-            letra.toLowerCase();
-
-          const texto =
-            q[
-              "alternativa_" +
-              minuscula
-            ]
-            ??
-            q[
-              "alternativa_" +
-              letra
-            ]
-            ??
-            q[
-              "alternativa" +
-              letra
-            ]
-            ??
-            (
-              alternativasObjeto
-                ? (
-                    alternativasObjeto[letra]
-                    ??
-                    alternativasObjeto[minuscula]
-                  )
-                : null
-            );
-
-          if (
-            texto !== null &&
-            texto !== undefined &&
-            String(texto).trim() !== ""
-          ) {
-
-            opcoes.push({
-              letra,
-              texto: String(texto)
-            });
+            p_origem:
+              "questoes"
           }
-        });
-
-      return {
-        id:
-          q.id ??
-          q.questao_id,
-
-        enunciado:
-          textoSeguro(
-            q.enunciado ??
-            q.questao ??
-            q.texto
-          ),
-
-        dificuldade:
-          textoSeguro(
-            q.dificuldade ??
-            ""
-          ),
-
-        alternativas:
-          opcoes
-      };
-    }
-
-    function exibirQuestao() {
-
-      if (
-        indiceAtual >=
-        questoes.length
-      ) {
-
-        mostrarMensagem(
-          "Você concluiu as questões carregadas. Clique em Buscar questões para continuar estudando."
         );
 
-        return;
+      if (error) {
+        throw error;
       }
 
-      respondida = false;
+      const r =
+        data || {};
 
-      questaoAtual =
-        normalizarQuestao(
-          questoes[indiceAtual]
-        );
+      const acertou =
+        r.acertou
+        ??
+        r.correto
+        ??
+        r.is_correct
+        ??
+        false;
 
-      esconderMensagem();
+      const correta =
+        r.resposta_correta
+        ??
+        r.correta
+        ??
+        r.gabarito
+        ??
+        r.correta_resposta
+        ??
+        r.alternativa_correta
+        ??
+        r.gabarito_ce
+        ??
+        null;
 
-      questaoCard.style.display =
-        "block";
+      const explicacao =
+        r.explicacao ?? "";
 
-      questaoNumero.textContent =
-        "Questão " +
-        (indiceAtual + 1) +
-        " de " +
-        questoes.length;
+      const baseLegal =
+        r.base_legal ?? "";
 
-      questaoDificuldade.textContent =
-        questaoAtual.dificuldade ||
-        "Questão";
+      respondida = true;
 
-      enunciado.textContent =
-        questaoAtual.enunciado;
+      botoes.forEach(botao => {
+        const letra =
+          botao.dataset.letra;
 
-      alternativas.innerHTML =
-        "";
+        if (
+          correta &&
+          letra === String(correta)
+        ) {
+          botao.classList.add(
+            "correta"
+          );
+        }
 
-      resultado.innerHTML =
-        "";
+        if (
+          !acertou &&
+          letra === respostaAluno
+        ) {
+          botao.classList.add(
+            "errada"
+          );
+        }
+      });
+
+      stats.respondidas++;
+
+      if (acertou) {
+        stats.acertos++;
+      } else {
+        stats.erros++;
+      }
+
+      atualizarStats();
 
       resultado.className =
-        "resultado";
+        acertou
+          ? "resultado acerto"
+          : "resultado erro";
 
-      acoes.className =
-        "acoes";
+      const titulo =
+        document.createElement(
+          "div"
+        );
 
-      btnRevisao.textContent =
-        "☆ Marcar para revisão";
+      titulo.className =
+        "resultado-titulo";
 
-      questaoAtual.alternativas
-        .forEach(opcao => {
+      titulo.textContent =
+        acertou
+          ? "✓ Resposta correta!"
+          : "✗ Resposta incorreta.";
 
-          const botao =
-            document.createElement(
-              "button"
-            );
+      resultado.appendChild(
+        titulo
+      );
 
-          botao.type =
-            "button";
-
-          botao.className =
-            "alternativa";
-
-          botao.dataset.letra =
-            opcao.letra;
-
-          const letra =
-            document.createElement(
-              "span"
-            );
-
-          letra.className =
-            "letra";
-
-          letra.textContent =
-            opcao.letra;
-
-          const texto =
-            document.createElement(
-              "span"
-            );
-
-          texto.textContent =
-            opcao.texto;
-
-          botao.appendChild(
-            letra
+      if (explicacao) {
+        const exp =
+          document.createElement(
+            "div"
           );
 
-          botao.appendChild(
-            texto
-          );
+        exp.className =
+          "explicacao";
 
-          botao.addEventListener(
-            "click",
-            () =>
-              responderQuestao(
-                opcao.letra
-              )
-          );
+        exp.textContent =
+          explicacao;
 
-          alternativas.appendChild(
-            botao
-          );
-        });
-
-      window.scrollTo({
-        top:
-          Math.max(
-            0,
-            questaoCard.offsetTop - 95
-          ),
-        behavior: "smooth"
-      });
-    }
-
-    async function responderQuestao(
-      respostaAluno
-    ) {
-
-      if (
-        respondida ||
-        !questaoAtual
-      ) {
-        return;
+        resultado.appendChild(
+          exp
+        );
       }
 
-      const botoes =
-        alternativas.querySelectorAll(
-          ".alternativa"
+      if (baseLegal) {
+        const base =
+          document.createElement(
+            "div"
+          );
+
+        base.className =
+          "base-legal";
+
+        base.textContent =
+          "Base legal/referência: " +
+          baseLegal;
+
+        resultado.appendChild(
+          base
         );
+      }
+
+      acoes.className =
+        "acoes visivel";
+
+    } catch (erro) {
+      console.error(
+        "ROH resposta:",
+        erro
+      );
 
       botoes.forEach(
         botao =>
-          botao.disabled = true
+          botao.disabled = false
       );
 
-      try {
+      alert(
+        "Não foi possível registrar sua resposta."
+      );
+    }
+  }
 
+  btnProxima.addEventListener(
+    "click",
+    () => {
+      indiceAtual++;
+      exibirQuestao();
+    }
+  );
+
+  btnRevisao.addEventListener(
+    "click",
+    async () => {
+      if (
+        !questaoAtual ||
+        !respondida
+      ) {
+        return;
+      }
+
+      btnRevisao.disabled =
+        true;
+
+      try {
         const {
-          data,
           error
         } =
-          await supabaseClient
-            .rpc(
-              "roh_responder_questao",
-              {
-                p_questao_id:
-                  Number(
-                    questaoAtual.id
-                  ),
-
-                p_resposta:
-                  respostaAluno,
-
-                p_origem:
-                  "questoes"
-              }
-            );
+          await supabaseClient.rpc(
+            "roh_marcar_revisao",
+            {
+              p_questao_id:
+                Number(
+                  questaoAtual.id
+                )
+            }
+          );
 
         if (error) {
           throw error;
         }
 
-        const r =
-          data || {};
-
-        const acertou =
-          r.acertou
-          ??
-          r.correto
-          ??
-          r.is_correct
-          ??
-          false;
-
-        const correta =
-          r.resposta_correta
-          ??
-          r.correta
-          ??
-          r.gabarito
-          ??
-          r.correta_resposta
-          ??
-          r.alternativa_correta
-          ??
-          r.gabarito_ce
-          ??
-          null;
-
-        const explicacao =
-          r.explicacao
-          ??
-          "";
-
-        const baseLegal =
-          r.base_legal
-          ??
-          "";
-
-        respondida = true;
-
-        botoes.forEach(botao => {
-
-          const letra =
-            botao.dataset.letra;
-
-          if (
-            correta &&
-            letra === String(correta)
-          ) {
-
-            botao.classList.add(
-              "correta"
-            );
-          }
-
-          if (
-            !acertou &&
-            letra === respostaAluno
-          ) {
-
-            botao.classList.add(
-              "errada"
-            );
-          }
-        });
-
-        estatisticas.respondidas++;
-
-        if (acertou) {
-
-          estatisticas.acertos++;
-
-        } else {
-
-          estatisticas.erros++;
-        }
-
-        atualizarEstatisticas();
-
-        resultado.className =
-          acertou
-            ? "resultado acerto"
-            : "resultado erro";
-
-        const titulo =
-          document.createElement(
-            "div"
-          );
-
-        titulo.className =
-          "resultado-titulo";
-
-        titulo.textContent =
-          acertou
-            ? "✓ Resposta correta!"
-            : "✗ Resposta incorreta.";
-
-        resultado.appendChild(
-          titulo
-        );
-
-        if (explicacao) {
-
-          const explicacaoEl =
-            document.createElement(
-              "div"
-            );
-
-          explicacaoEl.className =
-            "explicacao";
-
-          explicacaoEl.textContent =
-            explicacao;
-
-          resultado.appendChild(
-            explicacaoEl
-          );
-        }
-
-        if (baseLegal) {
-
-          const baseEl =
-            document.createElement(
-              "div"
-            );
-
-          baseEl.className =
-            "base-legal";
-
-          baseEl.textContent =
-            "Base legal/referência: " +
-            baseLegal;
-
-          resultado.appendChild(
-            baseEl
-          );
-        }
-
-        acoes.className =
-          "acoes visivel";
+        btnRevisao.textContent =
+          "★ Marcada para revisão";
 
       } catch (erro) {
-
         console.error(
-          "ROH resposta:",
+          "ROH revisão:",
           erro
-        );
-
-        botoes.forEach(
-          botao =>
-            botao.disabled = false
         );
 
         alert(
-          "Não foi possível registrar sua resposta."
+          "Não foi possível marcar esta questão para revisão."
         );
+
+      } finally {
+        btnRevisao.disabled =
+          false;
       }
     }
+  );
 
-    btnProxima.addEventListener(
-      "click",
-      () => {
+  btnSair.addEventListener(
+    "click",
+    async () => {
+      await supabaseClient
+        .auth
+        .signOut();
 
-        indiceAtual++;
+      window.location.href =
+        "login.html";
+    }
+  );
 
-        exibirQuestao();
-      }
+  async function iniciar() {
+    mostrarMensagem(
+      "Verificando sua conta..."
     );
 
-    btnRevisao.addEventListener(
-      "click",
-      async () => {
+    try {
+      const ok =
+        await verificarUsuario();
 
-        if (
-          !questaoAtual ||
-          !respondida
-        ) {
-          return;
-        }
-
-        btnRevisao.disabled =
-          true;
-
-        try {
-
-          const {
-            error
-          } =
-            await supabaseClient
-              .rpc(
-                "roh_marcar_revisao",
-                {
-                  p_questao_id:
-                    Number(
-                      questaoAtual.id
-                    )
-                }
-              );
-
-          if (error) {
-            throw error;
-          }
-
-          btnRevisao.textContent =
-            "★ Marcada para revisão";
-
-        } catch (erro) {
-
-          console.error(
-            "ROH revisão:",
-            erro
-          );
-
-          alert(
-            "Não foi possível marcar esta questão para revisão."
-          );
-
-        } finally {
-
-          btnRevisao.disabled =
-            false;
-        }
+      if (!ok) {
+        return;
       }
-    );
-
-    btnSair.addEventListener(
-      "click",
-      async () => {
-
-        await supabaseClient
-          .auth
-          .signOut();
-
-        window.location.href =
-          "login.html";
-      }
-    );
-
-    async function iniciar() {
 
       mostrarMensagem(
-        "Verificando sua conta..."
+        "Carregando seus cargos..."
       );
 
-      try {
+      await carregarCargos();
 
-        const autenticado =
-          await verificarUsuario();
+    } catch (erro) {
+      console.error(
+        "ROH inicialização:",
+        erro
+      );
 
-        if (!autenticado) {
-          return;
-        }
-
-        mostrarMensagem(
-          "Carregando seus cargos..."
-        );
-
-        await carregarCargos();
-
-      } catch (erro) {
-
-        console.error(
-          "ROH inicialização:",
-          erro
-        );
-
-        mostrarMensagem(
-          "Não foi possível iniciar a área de questões.",
-          true
-        );
-      }
+      mostrarMensagem(
+        "Não foi possível iniciar a área de questões.",
+        true
+      );
     }
+  }
 
-    iniciar();
-
-  </script>
+  iniciar();
+</script>
 
 </body>
 </html>
