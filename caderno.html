@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#071426">
+<title>Caderno inteligente | ROH Beta</title>
+<link rel="stylesheet" href="assets/roh.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="assets/roh-core.js"></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="area.html"><span class="brand-mark">R</span><span class="brand-text"><strong>ROH Concursos</strong><span>Caderno inteligente</span></span></a><div class="top-actions"><a class="btn-ghost" href="area.html">Área do aluno</a><span class="user-email" data-user-email></span><button class="btn-ghost" data-logout>Sair</button></div></header>
+<main class="page">
+  <div class="eyebrow">Caderno inteligente</div><h1 class="title">Uma sessão focada em você</h1><p class="subtitle">O sistema prioriza questões nunca respondidas, depois questões que você já errou e, por último, as que já acertou.</p>
+  <section class="filters" id="setup"><div class="filter-grid">
+    <div class="field"><label>Cargo</label><select id="cargo"></select></div>
+    <div class="field"><label>Disciplina</label><select id="disciplina" disabled><option>Opcional</option></select></div>
+    <div class="field"><label>Assunto</label><select id="assunto" disabled><option>Todos</option></select></div>
+    <div class="field"><label>Dificuldade</label><select id="dificuldade"><option value="">Todas</option><option>Fácil</option><option>Média</option><option>Difícil</option></select></div>
+    <div class="field"><label>Quantidade</label><select id="quantidade"><option>5</option><option selected>10</option><option>20</option><option>30</option></select></div>
+    <div class="field" style="grid-column:span 3"><button id="iniciar" class="btn-primary" style="width:100%" disabled>Iniciar caderno</button></div>
+  </div></section>
+  <section id="sessionStats" class="stats hidden"><div class="stat"><span>Respondidas</span><strong id="sResp">0</strong></div><div class="stat"><span>Acertos</span><strong id="sAce">0</strong></div><div class="stat"><span>Erros</span><strong id="sErr">0</strong></div><div class="stat"><span>Aproveitamento</span><strong id="sPct">0%</strong></div></section>
+  <div id="status" class="notice">Configure o caderno e inicie uma sessão.</div>
+  <article id="question" class="question hidden"><div class="question-head"><span id="ordem" class="question-num"></span><span id="dif" class="pill"></span></div><div id="meta" class="meta"></div><div id="texto" class="question-text"></div><div id="options" class="options"></div><div id="answer" class="answer-box hidden"></div><div id="actions" class="actions hidden"><button id="proxima" class="btn-primary push">Próxima →</button></div></article>
+  <section class="panel panel-pad" style="margin-top:24px"><h2 style="margin-top:0">Sessões recentes</h2><div id="history" class="list"><div class="notice">Carregando histórico...</div></div></section>
+</main>
+<script>
+window.addEventListener("DOMContentLoaded",async()=>{
+  while(!window.ROH) await new Promise(r=>setTimeout(r,30));ROH.bindLogout();const cargo=ROH.el("cargo"),disc=ROH.el("disciplina"),ass=ROH.el("assunto"),start=ROH.el("iniciar"),status=ROH.el("status");
+  let sid=null,current=null,answered=false,local={r:0,a:0,e:0};
+  try{const s=await ROH.requireSession();if(!s)return;ROH.setUserEmail(s);await ROH.loadCargoSelect(cargo);await history();}catch(e){status.className="notice error";status.textContent=e.message;return;}
+  cargo.addEventListener("change",async()=>{disc.disabled=true;ass.disabled=true;start.disabled=!cargo.value;disc.innerHTML="<option value=''>Todas as disciplinas</option>";ass.innerHTML="<option value=''>Todos os assuntos</option>";if(!cargo.value)return;try{const data=await ROH.studyOptions(cargo.value,null);const arr=Array.isArray(data?.disciplinas)?data.disciplinas:[];disc.innerHTML="<option value=''>Todas as disciplinas</option>";arr.forEach(d=>ROH.option(disc,d.disciplina_id??d.id,d.disciplina_nome??d.nome??d.disciplina));disc.disabled=false;}catch(e){status.className="notice error";status.textContent=e.message;}});
+  disc.addEventListener("change",async()=>{ass.disabled=true;ass.innerHTML="<option value=''>Todos os assuntos</option>";if(!disc.value)return;try{await ROH.fillSubjects(ass,cargo.value,disc.value,true);ass.disabled=false;}catch(e){status.className="notice error";status.textContent=e.message;}});
+  start.addEventListener("click",async()=>{start.disabled=true;status.className="notice";status.textContent="Montando uma sessão inteligente...";try{const r=await ROH.rpc("roh_iniciar_estudo_v2",{p_cargo_id:Number(cargo.value),p_disciplina_id:disc.value?Number(disc.value):null,p_assunto_id:ass.value?Number(ass.value):null,p_dificuldade:ROH.el("dificuldade").value||null,p_quantidade:Number(ROH.el("quantidade").value)});sid=Number(r.sessao_id);local={r:0,a:0,e:0};updateStats();ROH.el("sessionStats").classList.remove("hidden");await next();}catch(e){console.error(e);status.className="notice error";status.textContent=e.message||"Não foi possível iniciar o caderno.";start.disabled=false;}});
+  function updateStats(){ROH.el("sResp").textContent=local.r;ROH.el("sAce").textContent=local.a;ROH.el("sErr").textContent=local.e;ROH.el("sPct").textContent=local.r?`${Math.round(local.a/local.r*100)}%`:"0%";}
+  async function next(){status.textContent="Carregando próxima questão...";const r=await ROH.rpc("roh_proxima_questao_estudo_v1",{p_sessao_id:sid});if(r?.acabou){const res=await ROH.rpc("roh_resultado_estudo_v1",{p_sessao_id:sid});ROH.el("question").classList.add("hidden");status.className="notice success";status.textContent=`Caderno concluído: ${res.acertos} acerto(s), ${res.erros} erro(s), ${ROH.pct(res.percentual)} de aproveitamento.`;start.disabled=false;await history();return;}current=ROH.normalizedQuestion(r.questao||{});answered=false;status.classList.add("hidden");ROH.el("question").classList.remove("hidden");ROH.el("ordem").textContent=`Questão ${r.ordem}`;ROH.el("dif").textContent=current.dificuldade||"Questão";ROH.el("meta").textContent=[current.disciplina,current.assunto].filter(Boolean).join(" • ");ROH.el("texto").textContent=current.enunciado;ROH.el("answer").className="answer-box hidden";ROH.el("actions").className="actions hidden";ROH.renderAlternatives(ROH.el("options"),current,answer);}
+  async function answer(letter){if(answered)return;ROH.el("options").querySelectorAll("button").forEach(b=>b.disabled=true);try{const r=await ROH.rpc("roh_responder_estudo_v1",{p_sessao_id:sid,p_questao_id:Number(current.id),p_resposta:letter});answered=true;ROH.markAlternatives(ROH.el("options"),letter,r.gabarito);local.r++;if(r.acertou)local.a++;else local.e++;updateStats();const box=ROH.el("answer");box.className=`answer-box ${r.acertou?"ok":"bad"}`;box.innerHTML="";const st=document.createElement("strong");st.textContent=r.acertou?"✓ Resposta correta!":"✗ Resposta incorreta — ela entrou automaticamente na revisão.";const ex=document.createElement("div");ex.textContent=r.explicacao||"";box.append(st,ex);if(r.base_legal){const b=document.createElement("div");b.className="base";b.textContent=`Base: ${r.base_legal}`;box.appendChild(b);}ROH.el("actions").className="actions";}catch(e){console.error(e);alert(e.message||"Não foi possível registrar a resposta.");ROH.el("options").querySelectorAll("button").forEach(b=>b.disabled=false);}}
+  ROH.el("proxima").addEventListener("click",next);
+  async function history(){const box=ROH.el("history");try{const arr=await ROH.rpc("roh_meus_estudos_v1",{p_limite:10});box.innerHTML="";if(!Array.isArray(arr)||!arr.length){box.innerHTML='<div class="notice">Nenhuma sessão registrada ainda.</div>';return;}arr.forEach(x=>{const c=document.createElement("article");c.className="list-card";const h=document.createElement("h3");h.textContent=x.cargo||"Sessão de estudo";const p=document.createElement("p");p.textContent=[x.disciplina,x.assunto,x.dificuldade].filter(Boolean).join(" • ")||"Sessão geral";const m=document.createElement("div");m.className="meta";m.textContent=`${x.quantidade_respondida}/${x.quantidade_solicitada} respondidas • ${x.acertos} acertos • ${ROH.pct(x.percentual)} • ${ROH.formatDate(x.iniciado_em)}`;c.append(h,p,m);box.appendChild(c);});}catch(e){box.innerHTML='<div class="notice error">Não foi possível carregar o histórico.</div>';}}
+});
+</script>
+</body>
+</html>
