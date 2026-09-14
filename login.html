@@ -1,58 +1,13 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#071426">
-<title>Entrar | ROH Concursos Beta</title>
-<link rel="stylesheet" href="assets/roh.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="assets/roh-core.js"></script>
-</head>
-<body>
-<div class="login-shell">
-  <section class="login-brand">
-    <a class="brand" href="index.html"><span class="brand-mark">R</span><span class="brand-text"><strong>ROH Concursos</strong><span>Versão beta</span></span></a>
-    <div class="login-copy"><span class="beta-badge">● BETA DE TESTES</span><h1>Continue sua <span>preparação.</span></h1><p>Entre para acessar questões, caderno inteligente, revisão, desempenho e simulados.</p></div>
-    <div class="muted small">© 2026 ROH Concursos</div>
-  </section>
-  <section class="login-side">
-    <div class="panel login-card">
-      <a class="muted small" href="index.html">← Voltar ao início</a>
-      <h2 style="margin-top:20px">Entrar</h2>
-      <p class="muted">Use o e-mail e a senha cadastrados na ROH.</p>
-      <form id="formLogin" style="margin-top:22px">
-        <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="username" inputmode="email" required placeholder="seuemail@exemplo.com"></div>
-        <div class="field" style="margin-top:14px"><label for="senha">Senha</label><input id="senha" type="password" autocomplete="current-password" required placeholder="Digite sua senha"></div>
-        <div class="actions"><button class="btn-primary" id="btnEntrar" type="submit" style="width:100%">Entrar na ROH</button></div>
-        <div id="msg" class="notice hidden"></div>
-      </form>
-      <div class="sep"></div>
-      <p class="muted small">Sua autenticação é validada diretamente pelo Supabase. A chave usada nesta página é apenas a chave pública da aplicação.</p>
-    </div>
-  </section>
-</div>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#071426">
+<title>Entrar | ROH Concursos Beta</title><link rel="stylesheet" href="assets/roh.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="assets/roh-core.js"></script>
+</head><body><div class="login-shell">
+<section class="login-brand"><a class="brand" href="index.html"><span class="brand-mark">R</span><span class="brand-text"><strong>ROH Concursos</strong><span>Versão beta</span></span></a><div class="login-copy"><span class="beta-badge">● BETA DE TESTES</span><h1>Continue sua <span>preparação.</span></h1><p>Entre para acessar questões, caderno inteligente, revisão, desempenho, simulados, ranking e calendário.</p></div><div class="muted small">© 2026 ROH Concursos</div></section>
+<section class="login-side"><div class="panel login-card"><a class="muted small" href="index.html">← Voltar ao início</a><h2 style="margin-top:20px">Entrar</h2><p class="muted">Use o e-mail e a senha cadastrados na ROH.</p><form id="formLogin" style="margin-top:22px"><div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="username" inputmode="email" required placeholder="seuemail@exemplo.com"></div><div class="field" style="margin-top:14px"><label for="senha">Senha</label><input id="senha" type="password" autocomplete="current-password" required placeholder="Digite sua senha"></div><div class="actions"><button class="btn-primary" id="btnEntrar" type="submit" style="width:100%">Entrar na ROH</button></div><div id="msg" class="notice hidden"></div></form><div class="sep"></div><p class="muted small">Contas sem período de acesso válido são direcionadas para a página de assinatura. Contas bloqueadas permanecem sem acesso.</p></div></section></div>
 <script>
-window.addEventListener("DOMContentLoaded", async () => {
-  const wait = () => new Promise(r => setTimeout(r, 30));
-  while (!window.ROH) await wait();
-  const msg = ROH.el("msg"), btn = ROH.el("btnEntrar");
-  function show(text, error=true){ msg.textContent=text; msg.className=`notice ${error?"error":"success"}`; }
-  try { if (await ROH.getSession()) { location.href="area.html"; return; } } catch(e){ console.error(e); }
-  ROH.el("formLogin").addEventListener("submit", async e => {
-    e.preventDefault(); msg.className="notice hidden"; btn.disabled=true; btn.textContent="Entrando...";
-    try {
-      const email=ROH.el("email").value.trim().toLowerCase(), password=ROH.el("senha").value;
-      const {data,error}=await ROH.client.auth.signInWithPassword({email,password});
-      if(error) throw error;
-      if(!data?.session) throw new Error("Sessão não iniciada.");
-      const active=await ROH.rpc("roh_usuario_ativo");
-      if(active!==true){ await ROH.client.auth.signOut(); throw new Error("Conta sem acesso ativo."); }
-      show("Login realizado. Abrindo sua área...",false); setTimeout(()=>location.href="area.html",250);
-    } catch(err){ console.error(err); const m=(err?.message||"").toLowerCase(); show(m.includes("invalid login credentials")?"E-mail ou senha incorretos.":(err?.message||"Não foi possível entrar.")); }
-    finally { btn.disabled=false; btn.textContent="Entrar na ROH"; }
-  });
-});
-</script>
-</body>
-</html>
+window.addEventListener("DOMContentLoaded",async()=>{const wait=()=>new Promise(r=>setTimeout(r,30));while(!window.ROH)await wait();const msg=ROH.el("msg"),btn=ROH.el("btnEntrar");function show(t,e=true){msg.textContent=t;msg.className=`notice ${e?"error":"success"}`}
+async function destino(){const estado=await ROH.rpc("roh_estado_conta_v1");if(estado?.status_perfil==="bloqueado"){await ROH.client.auth.signOut();throw new Error("Conta bloqueada.")}if(estado?.tipo==="administrador"||estado?.acesso_comercial_ativo===true){location.href="area.html";return}location.href="assinatura.html"}
+try{if(await ROH.getSession()){await destino();return}}catch(e){console.error(e)}ROH.el("formLogin").addEventListener("submit",async e=>{e.preventDefault();msg.className="notice hidden";btn.disabled=true;btn.textContent="Entrando...";try{const email=ROH.el("email").value.trim().toLowerCase(),password=ROH.el("senha").value;const {data,error}=await ROH.client.auth.signInWithPassword({email,password});if(error)throw error;if(!data?.session)throw new Error("Sessão não iniciada.");show("Login realizado. Verificando acesso...",false);await destino()}catch(err){console.error(err);const m=(err?.message||"").toLowerCase();show(m.includes("invalid login credentials")?"E-mail ou senha incorretos.":(err?.message||"Não foi possível entrar."))}finally{btn.disabled=false;btn.textContent="Entrar na ROH"}})});
+</script></body></html>
