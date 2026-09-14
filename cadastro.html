@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#071426">
+<title>Criar conta | ROH Concursos Beta</title>
+<link rel="stylesheet" href="assets/roh.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="assets/roh-core.js"></script>
+</head>
+<body>
+<div class="login-shell">
+<section class="login-brand">
+  <a class="brand" href="index.html"><span class="brand-mark">R</span><span class="brand-text"><strong>ROH Concursos</strong><span>Versão beta</span></span></a>
+  <div class="login-copy"><span class="beta-badge">● CADASTRO</span><h1>Crie sua conta <span>ROH.</span></h1><p>Escolha seu concurso e cargo de interesse. A liberação de acesso ocorre conforme o período comercial ou autorização administrativa.</p></div>
+  <div class="muted small">© 2026 ROH Concursos</div>
+</section>
+<section class="login-side">
+<div class="panel login-card">
+  <a class="muted small" href="index.html">← Voltar ao início</a>
+  <h2 style="margin-top:20px">Criar conta</h2>
+  <p class="muted">Seus dados de autenticação são tratados pelo Supabase Auth.</p>
+  <form id="formCadastro" style="margin-top:22px">
+    <div class="field"><label for="nome">Nome</label><input id="nome" autocomplete="name" required minlength="2" maxlength="120" placeholder="Seu nome"></div>
+    <div class="field" style="margin-top:14px"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" inputmode="email" required placeholder="seuemail@exemplo.com"></div>
+    <div class="field" style="margin-top:14px"><label for="senha">Senha</label><input id="senha" type="password" autocomplete="new-password" required minlength="8" placeholder="Mínimo de 8 caracteres"></div>
+    <div class="field" style="margin-top:14px"><label for="confirmar">Confirmar senha</label><input id="confirmar" type="password" autocomplete="new-password" required minlength="8" placeholder="Repita a senha"></div>
+    <div class="field" style="margin-top:14px"><label for="concurso">Concurso de interesse</label><select id="concurso" required><option value="">Carregando...</option></select></div>
+    <div class="field" style="margin-top:14px"><label for="cargo">Cargo de interesse</label><select id="cargo" required disabled><option value="">Selecione o concurso primeiro</option></select></div>
+    <div class="actions"><button class="btn-primary" id="btnCadastrar" type="submit" style="width:100%">Criar conta</button></div>
+    <div id="msg" class="notice hidden"></div>
+  </form>
+  <div class="sep"></div>
+  <p class="muted small">Já possui conta? <a href="login.html">Entrar</a>.</p>
+</div>
+</section>
+</div>
+<script>
+window.addEventListener("DOMContentLoaded",async()=>{
+  while(!window.ROH) await new Promise(r=>setTimeout(r,30));
+  const concurso=ROH.el("concurso"),cargo=ROH.el("cargo"),msg=ROH.el("msg"),btn=ROH.el("btnCadastrar");let catalogo=[];
+  const show=(t,e=true)=>{msg.textContent=t;msg.className=`notice ${e?"error":"success"}`};
+  try{
+    if(await ROH.getSession()){location.href="assinatura.html";return}
+    const data=await ROH.rpc("roh_catalogo_publico");catalogo=Array.isArray(data)?data:[];
+    const concursos=[...new Map(catalogo.map(x=>[String(x.concurso_id),{id:x.concurso_id,nome:x.concurso,ano:x.ano}])).values()];
+    concurso.innerHTML='<option value="">Selecione o concurso</option>';
+    concursos.forEach(x=>ROH.option(concurso,x.id,`${x.nome}${x.ano?` · ${x.ano}`:""}`));
+    if(!concursos.length){show("Nenhum concurso está disponível para cadastro neste momento.");btn.disabled=true}
+  }catch(e){console.error(e);show(e.message||"Não foi possível carregar o catálogo.");btn.disabled=true}
+
+  concurso.addEventListener("change",()=>{
+    const id=Number(concurso.value);cargo.innerHTML='<option value="">Selecione o cargo</option>';
+    const itens=catalogo.filter(x=>Number(x.concurso_id)===id);
+    itens.forEach(x=>ROH.option(cargo,x.cargo_id,`${x.cargo}${x.nivel?` · ${x.nivel}`:""}`));
+    cargo.disabled=!id||!itens.length;
+  });
+
+  ROH.el("formCadastro").addEventListener("submit",async e=>{
+    e.preventDefault();msg.className="notice hidden";btn.disabled=true;btn.textContent="Criando...";
+    try{
+      const nome=ROH.el("nome").value.trim(),email=ROH.el("email").value.trim().toLowerCase(),password=ROH.el("senha").value,confirm=ROH.el("confirmar").value;
+      const concursoId=Number(concurso.value),cargoId=Number(cargo.value),item=catalogo.find(x=>Number(x.cargo_id)===cargoId&&Number(x.concurso_id)===concursoId);
+      if(nome.length<2)throw new Error("Informe seu nome.");
+      if(password.length<8)throw new Error("A senha deve ter pelo menos 8 caracteres.");
+      if(password!==confirm)throw new Error("As senhas não coincidem.");
+      if(!item)throw new Error("Selecione um concurso e cargo válidos.");
+      const {data,error}=await ROH.client.auth.signUp({email,password,options:{data:{nome,concurso_interesse_id:concursoId,cargo_interesse_id:cargoId,cargo_interesse:item.cargo}}});
+      if(error)throw error;
+      if(data?.session){show("Conta criada. Abrindo opções de acesso...",false);location.href="assinatura.html";return}
+      show("Conta criada. Se a confirmação de e-mail estiver habilitada, confirme a mensagem enviada ao seu e-mail e depois entre na ROH.",false);
+      ROH.el("formCadastro").reset();cargo.disabled=true;cargo.innerHTML='<option value="">Selecione o concurso primeiro</option>';
+    }catch(err){console.error(err);const m=(err?.message||"").toLowerCase();show(m.includes("already registered")||m.includes("already been registered")?"Este e-mail já possui cadastro. Use a página de login.":(err?.message||"Não foi possível criar a conta."))}
+    finally{btn.disabled=false;btn.textContent="Criar conta"}
+  });
+});
+</script>
+</body>
+</html>
