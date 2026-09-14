@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Validate local links and JavaScript
+      - name: Validate frontend integrity and security
         shell: bash
         run: |
           python3 - <<'PY'
@@ -37,6 +37,8 @@ jobs:
 
           root = Path('.').resolve()
           html_files = sorted(root.glob('*.html'))
+          js_files = sorted((root / 'assets').glob('*.js'))
+          css_files = sorted((root / 'assets').glob('*.css'))
           errors = []
           inline_checked = 0
 
@@ -48,14 +50,23 @@ jobs:
                   self.script_has_src = False
                   self.script_parts = []
                   self.inline_scripts = []
+                  self.has_viewport = False
+                  self.robots = ''
 
               def handle_starttag(self, tag, attrs):
                   attrs = dict(attrs)
+                  tag = tag.lower()
                   for key in ('href', 'src'):
                       value = attrs.get(key)
                       if value:
                           self.refs.append(value.strip())
-                  if tag.lower() == 'script':
+                  if tag == 'meta':
+                      name = str(attrs.get('name', '')).lower()
+                      if name == 'viewport':
+                          self.has_viewport = True
+                      elif name == 'robots':
+                          self.robots = str(attrs.get('content', '')).lower()
+                  if tag == 'script':
                       self.in_script = True
                       self.script_has_src = bool(attrs.get('src'))
                       self.script_parts = []
@@ -81,9 +92,7 @@ jobs:
               if parsed.scheme or parsed.netloc:
                   return None
               path = parsed.path
-              if not path:
-                  return None
-              if path.startswith('/'):
+              if not path or path.startswith('/'):
                   return None
               return (page.parent / path).resolve()
 
@@ -94,6 +103,14 @@ jobs:
               except Exception as exc:
                   errors.append(f'{page.name}: HTML parser failed: {exc}')
                   continue
+
+              if not parser.has_viewport and not page.name.startswith('google'):
+                  errors.append(f'{page.name}: missing viewport meta tag')
+
+              if page.name.startswith('admin'):
+                  robots = {x.strip() for x in parser.robots.split(',') if x.strip()}
+                  if not {'noindex', 'nofollow'}.issubset(robots):
+                      errors.append(f'{page.name}: admin page must include robots noindex,nofollow')
 
               for ref in parser.refs:
                   target = local_target(page, ref)
@@ -117,15 +134,30 @@ jobs:
                   if result.returncode != 0:
                       errors.append(f'{page.name}: inline script #{idx}: {result.stderr.strip()}')
 
-          js_files = sorted((root / 'assets').glob('*.js'))
           for js in js_files:
               result = subprocess.run(['node', '--check', str(js)], capture_output=True, text=True)
               if result.returncode != 0:
                   errors.append(f'{js.relative_to(root)}: {result.stderr.strip()}')
 
+          # Prevent privileged credentials from entering browser-delivered files.
+          # Strings are assembled so the workflow file itself does not contain a live-looking secret token.
+          forbidden = [
+              'service' + '_role',
+              'MERCADO' + 'PAGO_ACCESS_TOKEN',
+              'MERCADO' + 'PAGO_WEBHOOK_SECRET',
+              'sb_' + 'secret_',
+          ]
+          browser_files = html_files + js_files + css_files
+          for path in browser_files:
+              text = path.read_text(encoding='utf-8', errors='replace')
+              for token in forbidden:
+                  if token in text:
+                      errors.append(f'{path.relative_to(root)}: forbidden privileged token reference: {token}')
+
           print(f'HTML pages checked: {len(html_files)}')
           print(f'Inline scripts checked: {inline_checked}')
           print(f'Asset JS files checked: {len(js_files)}')
+          print(f'Browser files scanned for privileged tokens: {len(browser_files)}')
 
           if errors:
               print('\nStatic check failures:', file=sys.stderr)
@@ -133,5 +165,5 @@ jobs:
                   print(f'- {error}', file=sys.stderr)
               sys.exit(1)
 
-          print('ROH static checks passed.')
+          print('ROH static and security checks passed.')
           PY
