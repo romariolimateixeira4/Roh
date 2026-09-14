@@ -24,7 +24,7 @@
     <div class="stat"><span>Alunos ativos</span><strong id="sAtivos">—</strong></div>
     <div class="stat"><span>Pendentes</span><strong id="sPendentes">—</strong></div>
     <div class="stat"><span>Respostas</span><strong id="sRespostas">—</strong></div>
-    <div class="stat"><span>Simulados finalizados</span><strong id="sSimulados">—</strong></div>
+    <div class="stat"><span>Simulados legados</span><strong id="sSimulados">—</strong></div>
   </section>
   <div id="dashboardStatus" class="notice">Carregando indicadores reais...</div>
 
@@ -57,7 +57,7 @@ window.addEventListener("DOMContentLoaded", async()=>{
       const d=rResumo.value||{};
       const map={sConcursos:d.concursos,sCargos:d.cargos,sQuestoes:d.questoes_ativas,sAlunos:d.alunos,sAtivos:d.ativos,sPendentes:d.pendentes,sRespostas:d.respostas,sSimulados:d.simulados};
       Object.entries(map).forEach(([id,v])=>ROH.el(id).textContent=ROHAdmin.fmtInt(v));
-      ROHAdmin.notice("dashboardStatus","Indicadores administrativos carregados do Supabase.","success");
+      ROHAdmin.notice("dashboardStatus","Indicadores carregados do Supabase. O contador de simulados ainda usa o sistema legado; o dashboard canônico V2 está no pacote de backend pendente de autorização.","success");
     }else{
       console.error(rResumo.reason); ROHAdmin.notice("dashboardStatus",rResumo.reason?.message||"Falha ao carregar o resumo administrativo.","error");
     }
