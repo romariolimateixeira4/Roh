@@ -11,14 +11,14 @@
 <div class="login-shell">
 <section class="login-brand">
   <a class="brand" href="index.html"><span class="brand-mark">R</span><span class="brand-text"><strong>ROH Concursos</strong><span>Versão beta</span></span></a>
-  <div class="login-copy"><span class="beta-badge">● CADASTRO</span><h1>Crie sua conta <span>ROH.</span></h1><p>Escolha seu concurso e cargo de interesse. A liberação de acesso ocorre conforme o período comercial ou autorização administrativa.</p></div>
+  <div class="login-copy"><span class="beta-badge">● CADASTRO</span><h1>Crie sua conta <span>ROH.</span></h1><p>Escolha seu concurso e cargo de interesse. Durante o beta, a liberação pode ser feita manualmente pela administração; a cobrança comercial permanece desativada.</p></div>
   <div class="muted small">© 2026 ROH Concursos</div>
 </section>
 <section class="login-side">
 <div class="panel login-card">
   <a class="muted small" href="index.html">← Voltar ao início</a>
   <h2 style="margin-top:20px">Criar conta</h2>
-  <p class="muted">Seus dados de autenticação são tratados pelo Supabase Auth.</p>
+  <p class="muted">Seus dados de autenticação são tratados pelo Supabase Auth. Durante o beta, a conta pode ser liberada manualmente pela administração; a cobrança comercial permanece desativada.</p>
   <form id="formCadastro" style="margin-top:22px">
     <div class="field"><label for="nome">Nome</label><input id="nome" autocomplete="name" required minlength="2" maxlength="120" placeholder="Seu nome"></div>
     <div class="field" style="margin-top:14px"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" inputmode="email" required placeholder="seuemail@exemplo.com"></div>
@@ -66,8 +66,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
       if(!item)throw new Error("Selecione um concurso e cargo válidos.");
       const {data,error}=await ROH.client.auth.signUp({email,password,options:{data:{nome,concurso_interesse_id:concursoId,cargo_interesse_id:cargoId,cargo_interesse:item.cargo}}});
       if(error)throw error;
-      if(data?.session){show("Conta criada. Abrindo opções de acesso...",false);location.href="assinatura.html";return}
-      show("Conta criada. Se a confirmação de e-mail estiver habilitada, confirme a mensagem enviada ao seu e-mail e depois entre na ROH.",false);
+      if(data?.session){show("Conta criada. Abrindo o estado do acesso...",false);location.href="assinatura.html";return}
+      show("Conta criada. Se a confirmação de e-mail estiver habilitada, confirme a mensagem enviada ao seu e-mail e depois entre na ROH. Durante o beta, aguarde a liberação administrativa do acesso.",false);
       ROH.el("formCadastro").reset();cargo.disabled=true;cargo.innerHTML='<option value="">Selecione o concurso primeiro</option>';
     }catch(err){console.error(err);const m=(err?.message||"").toLowerCase();show(m.includes("already registered")||m.includes("already been registered")?"Este e-mail já possui cadastro. Use a página de login.":(err?.message||"Não foi possível criar a conta."))}
     finally{btn.disabled=false;btn.textContent="Criar conta"}
