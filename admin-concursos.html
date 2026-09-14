@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#071426"><meta name="robots" content="noindex,nofollow">
+<title>Concursos e Cargos | ROH Beta</title>
+<link rel="stylesheet" href="assets/roh.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="assets/roh-core.js"></script>
+<script defer src="assets/roh-admin.js"></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="admin.html"><span class="brand-mark">R</span><span class="brand-text"><strong>ROH Concursos</strong><span>Concursos e cargos</span></span></a><div class="top-actions"><a class="btn-ghost" href="admin.html">Central</a><span class="user-email" data-user-email></span><button class="btn-ghost" data-logout>Sair</button></div></header>
+<main class="page">
+  <div class="eyebrow">Administração</div><h1 class="title">Concursos e cargos</h1><p class="subtitle">Edite registros existentes ou crie novos usando as RPCs administrativas V2. Não há exclusão física nesta tela.</p>
+
+  <section class="panel panel-pad" style="margin-top:24px">
+    <div class="actions" style="margin-top:0"><h2 style="margin:0">Concursos</h2><button id="novoConcurso" class="btn-ghost push">Novo concurso</button></div>
+    <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Ano</th><th>Organizador</th><th>Status</th><th>Cargos</th><th>Questões</th><th>Ação</th></tr></thead><tbody id="listaConcursos"></tbody></table></div>
+    <div id="statusConcursos" class="notice">Carregando concursos...</div>
+  </section>
+
+  <section class="panel panel-pad" style="margin-top:24px">
+    <h2 id="tituloFormConcurso" style="margin-top:0">Novo concurso</h2>
+    <input id="concursoId" type="hidden">
+    <div class="grid grid-3">
+      <div class="field"><label>Nome</label><input id="concursoNome"></div>
+      <div class="field"><label>Slug</label><input id="concursoSlug" placeholder="ex.: carolina-2026"></div>
+      <div class="field"><label>Organizador</label><input id="concursoOrganizador"></div>
+      <div class="field"><label>Ano</label><input id="concursoAno" type="number"></div>
+      <div class="field"><label>Status</label><select id="concursoStatus"><option value="planejado">Planejado</option><option value="ativo">Ativo</option><option value="encerrado">Encerrado</option></select></div>
+      <div class="field"><label>Visibilidade</label><select id="concursoAtivo"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
+    </div>
+    <div class="field" style="margin-top:14px"><label>Descrição</label><textarea id="concursoDescricao"></textarea></div>
+    <div class="actions"><button id="salvarConcurso" class="btn-primary">Salvar concurso</button><button id="limparConcurso" class="btn-ghost">Limpar</button></div>
+    <div id="statusFormConcurso" class="notice">Nenhuma alteração foi enviada.</div>
+  </section>
+
+  <section class="panel panel-pad" style="margin-top:24px">
+    <div class="actions" style="margin-top:0"><div><h2 style="margin:0">Cargos</h2><p id="cargoContexto" class="muted" style="margin:7px 0 0">Selecione um concurso acima.</p></div><button id="novoCargo" class="btn-ghost push" disabled>Novo cargo</button></div>
+    <div class="table-wrap"><table><thead><tr><th>Cargo</th><th>Nível</th><th>Status</th><th>Questões ativas</th><th>Alunos</th><th>Ação</th></tr></thead><tbody id="listaCargos"></tbody></table></div>
+    <div id="statusCargos" class="notice">Aguardando seleção de concurso.</div>
+  </section>
+
+  <section id="formCargo" class="panel panel-pad hidden" style="margin-top:24px">
+    <h2 id="tituloFormCargo" style="margin-top:0">Novo cargo</h2>
+    <input id="cargoId" type="hidden"><input id="cargoConcursoId" type="hidden">
+    <div class="grid grid-3">
+      <div class="field" style="grid-column:span 2"><label>Nome</label><input id="cargoNome"></div>
+      <div class="field"><label>Nível</label><select id="cargoNivel"><option value="fundamental">Fundamental</option><option value="medio">Médio/Técnico</option><option value="superior">Superior</option></select></div>
+      <div class="field"><label>Status</label><select id="cargoAtivo"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
+    </div>
+    <div class="actions"><button id="salvarCargo" class="btn-primary">Salvar cargo</button><button id="cancelarCargo" class="btn-ghost">Cancelar</button></div>
+    <div id="statusFormCargo" class="notice">Nenhuma alteração foi enviada.</div>
+  </section>
+</main>
+<script>
+window.addEventListener("DOMContentLoaded",async()=>{
+  const $=id=>document.getElementById(id); let concursos=[],selecionado=null,cargos=[];
+  try{const s=await ROHAdmin.init();if(!s)return;await carregarConcursos();}catch(e){console.error(e);ROHAdmin.notice("statusConcursos",e.message||"Falha ao iniciar.","error");}
+
+  function td(tr,v){const x=document.createElement("td");x.textContent=ROHAdmin.text(v);tr.appendChild(x);}
+  async function carregarConcursos(){
+    try{concursos=await ROH.rpc("roh_admin_concursos_v2")||[];renderConcursos();ROHAdmin.notice("statusConcursos",`${concursos.length} concurso(s) carregado(s).`,"success");}
+    catch(e){console.error(e);ROHAdmin.notice("statusConcursos",e.message||"Falha ao carregar concursos.","error");}
+  }
+  function renderConcursos(){
+    const tb=$("listaConcursos");tb.innerHTML="";
+    concursos.forEach(c=>{const tr=document.createElement("tr");td(tr,c.nome);td(tr,c.ano);td(tr,c.organizador);td(tr,`${c.status||"—"}${c.ativo===false?" · inativo":""}`);td(tr,`${c.cargos_ativos??0}/${c.total_cargos??0}`);td(tr,c.total_questoes??0);const a=document.createElement("td");const b=document.createElement("button");b.className="btn-ghost";b.textContent="Editar / cargos";b.addEventListener("click",()=>selecionarConcurso(c));a.appendChild(b);tr.appendChild(a);tb.appendChild(tr);});
+  }
+  async function selecionarConcurso(c){selecionado=c;$("concursoId").value=c.concurso_id;$("concursoNome").value=c.nome||"";$("concursoSlug").value=c.slug||"";$("concursoOrganizador").value=c.organizador||"";$("concursoAno").value=c.ano||"";$("concursoDescricao").value=c.descricao||"";$("concursoStatus").value=c.status||"ativo";$("concursoAtivo").value=String(c.ativo!==false);$("tituloFormConcurso").textContent=`Editar concurso #${c.concurso_id}`;$("novoCargo").disabled=false;$("cargoContexto").textContent=c.nome;await carregarCargos(c.concurso_id);window.scrollTo({top:document.querySelector("#tituloFormConcurso").offsetTop-100,behavior:"smooth"});}
+  function limparConcurso(){selecionado=null;$("concursoId").value="";["concursoNome","concursoSlug","concursoOrganizador","concursoAno","concursoDescricao"].forEach(id=>$(id).value="");$("concursoStatus").value="planejado";$("concursoAtivo").value="true";$("tituloFormConcurso").textContent="Novo concurso";$("novoCargo").disabled=true;$("cargoContexto").textContent="Selecione um concurso acima.";$("listaCargos").innerHTML="";$("formCargo").classList.add("hidden");ROHAdmin.notice("statusFormConcurso","Pronto para novo concurso.");ROHAdmin.notice("statusCargos","Aguardando seleção de concurso.");}
+  $("novoConcurso").addEventListener("click",limparConcurso);$("limparConcurso").addEventListener("click",limparConcurso);
+  $("salvarConcurso").addEventListener("click",async()=>{const b=$("salvarConcurso");ROHAdmin.busy(b,true,"Salvando...");try{const r=await ROH.rpc("roh_admin_salvar_concurso_v2",{p_concurso_id:$("concursoId").value?Number($("concursoId").value):null,p_nome:$("concursoNome").value,p_slug:$("concursoSlug").value,p_organizador:$("concursoOrganizador").value||null,p_ano:$("concursoAno").value?Number($("concursoAno").value):null,p_descricao:$("concursoDescricao").value||null,p_status:$("concursoStatus").value,p_ativo:$("concursoAtivo").value==="true"});ROHAdmin.notice("statusFormConcurso",`Concurso #${r.concurso_id} salvo.`,"success");await carregarConcursos();const c=concursos.find(x=>Number(x.concurso_id)===Number(r.concurso_id));if(c)await selecionarConcurso(c);}catch(e){console.error(e);ROHAdmin.notice("statusFormConcurso",e.message||"Falha ao salvar concurso.","error");}finally{ROHAdmin.busy(b,false);}});
+
+  async function carregarCargos(id){try{cargos=await ROH.rpc("roh_admin_cargos_concurso_v2",{p_concurso_id:Number(id)})||[];renderCargos();ROHAdmin.notice("statusCargos",`${cargos.length} cargo(s) carregado(s).`,"success");}catch(e){console.error(e);ROHAdmin.notice("statusCargos",e.message||"Falha ao carregar cargos.","error");}}
+  function renderCargos(){const tb=$("listaCargos");tb.innerHTML="";cargos.forEach(c=>{const tr=document.createElement("tr");td(tr,c.nome);td(tr,c.nivel);td(tr,c.ativo?"Ativo":"Inativo");td(tr,c.questoes_ativas);td(tr,c.total_alunos);const a=document.createElement("td");const b=document.createElement("button");b.className="btn-ghost";b.textContent="Editar";b.addEventListener("click",()=>editarCargo(c));a.appendChild(b);tr.appendChild(a);tb.appendChild(tr);});}
+  function abrirCargo(){if(!selecionado)return;$("formCargo").classList.remove("hidden");$("cargoId").value="";$("cargoConcursoId").value=selecionado.concurso_id;$("cargoNome").value="";$("cargoNivel").value="medio";$("cargoAtivo").value="true";$("tituloFormCargo").textContent="Novo cargo";ROHAdmin.notice("statusFormCargo","Pronto para novo cargo.");}
+  function editarCargo(c){$("formCargo").classList.remove("hidden");$("cargoId").value=c.cargo_id;$("cargoConcursoId").value=selecionado.concurso_id;$("cargoNome").value=c.nome||"";$("cargoNivel").value=c.nivel||"medio";$("cargoAtivo").value=String(c.ativo!==false);$("tituloFormCargo").textContent=`Editar cargo #${c.cargo_id}`;ROHAdmin.notice("statusFormCargo","Altere apenas o necessário; nenhuma exclusão física será feita.");window.scrollTo({top:$("formCargo").offsetTop-90,behavior:"smooth"});}
+  $("novoCargo").addEventListener("click",abrirCargo);$("cancelarCargo").addEventListener("click",()=>$("formCargo").classList.add("hidden"));
+  $("salvarCargo").addEventListener("click",async()=>{const b=$("salvarCargo");ROHAdmin.busy(b,true,"Salvando...");try{const r=await ROH.rpc("roh_admin_salvar_cargo_v2",{p_cargo_id:$("cargoId").value?Number($("cargoId").value):null,p_concurso_id:Number($("cargoConcursoId").value),p_nome:$("cargoNome").value,p_nivel:$("cargoNivel").value,p_ativo:$("cargoAtivo").value==="true"});ROHAdmin.notice("statusFormCargo",`Cargo #${r.cargo_id} salvo.`,"success");await carregarCargos(Number($("cargoConcursoId").value));await carregarConcursos();}catch(e){console.error(e);ROHAdmin.notice("statusFormCargo",e.message||"Falha ao salvar cargo.","error");}finally{ROHAdmin.busy(b,false);}});
+});
+</script>
+</body>
+</html>
