@@ -12,20 +12,20 @@
 <main class="page">
   <div class="eyebrow">Banco de questões</div><h1 class="title">Pratique por assunto</h1><p class="subtitle">As respostas e revisões ficam registradas no contexto do cargo selecionado.</p>
   <section class="filters"><div class="filter-grid">
-    <div class="field"><label>Cargo</label><select id="cargo"></select></div>
-    <div class="field"><label>Disciplina</label><select id="disciplina" disabled><option>Selecione o cargo</option></select></div>
-    <div class="field"><label>Assunto</label><select id="assunto" disabled><option>Todos os assuntos</option></select></div>
-    <div class="field"><label>Dificuldade</label><select id="dificuldade"><option value="">Todas</option><option value="Fácil">Fácil</option><option value="Média">Média</option><option value="Difícil">Difícil</option></select></div>
-    <div class="field"><label>Quantidade</label><select id="quantidade"><option>10</option><option selected>20</option><option>30</option><option>50</option></select></div>
-    <div class="field"><label>Modo</label><select id="modo"><option value="todas">Todas</option><option value="nao_respondidas">Não respondidas</option><option value="erros">Somente erros</option></select></div>
+    <div class="field"><label for="cargo">Cargo</label><select id="cargo"></select></div>
+    <div class="field"><label for="disciplina">Disciplina</label><select id="disciplina" disabled><option>Selecione o cargo</option></select></div>
+    <div class="field"><label for="assunto">Assunto</label><select id="assunto" disabled><option>Todos os assuntos</option></select></div>
+    <div class="field"><label for="dificuldade">Dificuldade</label><select id="dificuldade"><option value="">Todas</option><option value="Fácil">Fácil</option><option value="Média">Média</option><option value="Difícil">Difícil</option></select></div>
+    <div class="field"><label for="quantidade">Quantidade</label><select id="quantidade"><option>10</option><option selected>20</option><option>30</option><option>50</option></select></div>
+    <div class="field"><label for="modo">Modo</label><select id="modo"><option value="todas">Todas</option><option value="nao_respondidas">Não respondidas</option><option value="erros">Somente erros</option></select></div>
     <div class="field" style="grid-column:span 2"><button id="buscar" class="btn-primary" style="width:100%" disabled>Buscar questões</button></div>
   </div></section>
   <section class="stats"><div class="stat"><span>Respondidas nesta sessão</span><strong id="respondidas">0</strong></div><div class="stat"><span>Acertos</span><strong id="acertos">0</strong></div><div class="stat"><span>Erros</span><strong id="erros">0</strong></div><div class="stat"><span>Aproveitamento</span><strong id="pct">0%</strong></div></section>
-  <div id="msg" class="notice">Selecione um cargo para começar.</div>
+  <div id="msg" class="notice" role="status" aria-live="polite" aria-atomic="true">Selecione um cargo para começar.</div>
   <article id="question" class="question hidden">
     <div class="question-head"><span id="qnum" class="question-num"></span><span id="qdif" class="pill"></span></div>
     <div id="qmeta" class="meta"></div><div id="qtext" class="question-text"></div><div id="options" class="options"></div>
-    <div id="answer" class="answer-box hidden"></div>
+    <div id="answer" class="answer-box hidden" role="status" aria-live="polite" aria-atomic="true"></div>
     <div id="actions" class="actions hidden"><button id="review" class="btn-ghost">☆ Marcar para revisão</button><button id="next" class="btn-primary push">Próxima questão →</button></div>
   </article>
 </main>
