@@ -16,41 +16,41 @@
   <section class="panel panel-pad" style="margin-top:24px">
     <div class="actions" style="margin-top:0"><h2 style="margin:0">Concursos</h2><button id="novoConcurso" class="btn-ghost push">Novo concurso</button></div>
     <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Ano</th><th>Organizador</th><th>Status</th><th>Cargos</th><th>Questões</th><th>Ação</th></tr></thead><tbody id="listaConcursos"></tbody></table></div>
-    <div id="statusConcursos" class="notice">Carregando concursos...</div>
+    <div id="statusConcursos" class="notice" role="status" aria-live="polite" aria-atomic="true">Carregando concursos...</div>
   </section>
 
   <section class="panel panel-pad" style="margin-top:24px">
     <h2 id="tituloFormConcurso" style="margin-top:0">Novo concurso</h2>
     <input id="concursoId" type="hidden">
     <div class="grid grid-3">
-      <div class="field"><label>Nome</label><input id="concursoNome"></div>
-      <div class="field"><label>Slug</label><input id="concursoSlug" placeholder="ex.: carolina-2026"></div>
-      <div class="field"><label>Organizador</label><input id="concursoOrganizador"></div>
-      <div class="field"><label>Ano</label><input id="concursoAno" type="number"></div>
-      <div class="field"><label>Status</label><select id="concursoStatus"><option value="planejado">Planejado</option><option value="ativo">Ativo</option><option value="encerrado">Encerrado</option></select></div>
-      <div class="field"><label>Visibilidade</label><select id="concursoAtivo"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
+      <div class="field"><label for="concursoNome">Nome</label><input id="concursoNome"></div>
+      <div class="field"><label for="concursoSlug">Slug</label><input id="concursoSlug" placeholder="ex.: carolina-2026"></div>
+      <div class="field"><label for="concursoOrganizador">Organizador</label><input id="concursoOrganizador"></div>
+      <div class="field"><label for="concursoAno">Ano</label><input id="concursoAno" type="number"></div>
+      <div class="field"><label for="concursoStatus">Status</label><select id="concursoStatus"><option value="planejado">Planejado</option><option value="ativo">Ativo</option><option value="encerrado">Encerrado</option></select></div>
+      <div class="field"><label for="concursoAtivo">Visibilidade</label><select id="concursoAtivo"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
     </div>
-    <div class="field" style="margin-top:14px"><label>Descrição</label><textarea id="concursoDescricao"></textarea></div>
+    <div class="field" style="margin-top:14px"><label for="concursoDescricao">Descrição</label><textarea id="concursoDescricao"></textarea></div>
     <div class="actions"><button id="salvarConcurso" class="btn-primary">Salvar concurso</button><button id="limparConcurso" class="btn-ghost">Limpar</button></div>
-    <div id="statusFormConcurso" class="notice">Nenhuma alteração foi enviada.</div>
+    <div id="statusFormConcurso" class="notice" role="status" aria-live="polite" aria-atomic="true">Nenhuma alteração foi enviada.</div>
   </section>
 
   <section class="panel panel-pad" style="margin-top:24px">
     <div class="actions" style="margin-top:0"><div><h2 style="margin:0">Cargos</h2><p id="cargoContexto" class="muted" style="margin:7px 0 0">Selecione um concurso acima.</p></div><button id="novoCargo" class="btn-ghost push" disabled>Novo cargo</button></div>
     <div class="table-wrap"><table><thead><tr><th>Cargo</th><th>Nível</th><th>Status</th><th>Questões ativas</th><th>Alunos</th><th>Ação</th></tr></thead><tbody id="listaCargos"></tbody></table></div>
-    <div id="statusCargos" class="notice">Aguardando seleção de concurso.</div>
+    <div id="statusCargos" class="notice" role="status" aria-live="polite" aria-atomic="true">Aguardando seleção de concurso.</div>
   </section>
 
   <section id="formCargo" class="panel panel-pad hidden" style="margin-top:24px">
-    <h2 id="tituloFormCargo" style="margin-top:0">Novo cargo</h2>
+    <h2 id="tituloFormCargo" tabindex="-1" style="margin-top:0">Novo cargo</h2>
     <input id="cargoId" type="hidden"><input id="cargoConcursoId" type="hidden">
     <div class="grid grid-3">
-      <div class="field" style="grid-column:span 2"><label>Nome</label><input id="cargoNome"></div>
-      <div class="field"><label>Nível</label><select id="cargoNivel"><option value="fundamental">Fundamental</option><option value="medio">Médio/Técnico</option><option value="superior">Superior</option></select></div>
-      <div class="field"><label>Status</label><select id="cargoAtivo"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
+      <div class="field" style="grid-column:span 2"><label for="cargoNome">Nome</label><input id="cargoNome"></div>
+      <div class="field"><label for="cargoNivel">Nível</label><select id="cargoNivel"><option value="fundamental">Fundamental</option><option value="medio">Médio/Técnico</option><option value="superior">Superior</option></select></div>
+      <div class="field"><label for="cargoAtivo">Status</label><select id="cargoAtivo"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
     </div>
     <div class="actions"><button id="salvarCargo" class="btn-primary">Salvar cargo</button><button id="cancelarCargo" class="btn-ghost">Cancelar</button></div>
-    <div id="statusFormCargo" class="notice">Nenhuma alteração foi enviada.</div>
+    <div id="statusFormCargo" class="notice" role="status" aria-live="polite" aria-atomic="true">Nenhuma alteração foi enviada.</div>
   </section>
 </main>
 <script>
@@ -74,8 +74,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
   async function carregarCargos(id){try{cargos=await ROH.rpc("roh_admin_cargos_concurso_v2",{p_concurso_id:Number(id)})||[];renderCargos();ROHAdmin.notice("statusCargos",`${cargos.length} cargo(s) carregado(s).`,"success");}catch(e){console.error(e);ROHAdmin.notice("statusCargos",e.message||"Falha ao carregar cargos.","error");}}
   function renderCargos(){const tb=$("listaCargos");tb.innerHTML="";cargos.forEach(c=>{const tr=document.createElement("tr");td(tr,c.nome);td(tr,c.nivel);td(tr,c.ativo?"Ativo":"Inativo");td(tr,c.questoes_ativas);td(tr,c.total_alunos);const a=document.createElement("td");const b=document.createElement("button");b.className="btn-ghost";b.textContent="Editar";b.addEventListener("click",()=>editarCargo(c));a.appendChild(b);tr.appendChild(a);tb.appendChild(tr);});}
-  function abrirCargo(){if(!selecionado)return;$("formCargo").classList.remove("hidden");$("cargoId").value="";$("cargoConcursoId").value=selecionado.concurso_id;$("cargoNome").value="";$("cargoNivel").value="medio";$("cargoAtivo").value="true";$("tituloFormCargo").textContent="Novo cargo";ROHAdmin.notice("statusFormCargo","Pronto para novo cargo.");}
-  function editarCargo(c){$("formCargo").classList.remove("hidden");$("cargoId").value=c.cargo_id;$("cargoConcursoId").value=selecionado.concurso_id;$("cargoNome").value=c.nome||"";$("cargoNivel").value=c.nivel||"medio";$("cargoAtivo").value=String(c.ativo!==false);$("tituloFormCargo").textContent=`Editar cargo #${c.cargo_id}`;ROHAdmin.notice("statusFormCargo","Altere apenas o necessário; nenhuma exclusão física será feita.");window.scrollTo({top:$("formCargo").offsetTop-90,behavior:"smooth"});}
+  function abrirCargo(){if(!selecionado)return;$("formCargo").classList.remove("hidden");$("cargoId").value="";$("cargoConcursoId").value=selecionado.concurso_id;$("cargoNome").value="";$("cargoNivel").value="medio";$("cargoAtivo").value="true";$("tituloFormCargo").textContent="Novo cargo";ROHAdmin.notice("statusFormCargo","Pronto para novo cargo.");$("tituloFormCargo").focus();}
+  function editarCargo(c){$("formCargo").classList.remove("hidden");$("cargoId").value=c.cargo_id;$("cargoConcursoId").value=selecionado.concurso_id;$("cargoNome").value=c.nome||"";$("cargoNivel").value=c.nivel||"medio";$("cargoAtivo").value=String(c.ativo!==false);$("tituloFormCargo").textContent=`Editar cargo #${c.cargo_id}`;ROHAdmin.notice("statusFormCargo","Altere apenas o necessário; nenhuma exclusão física será feita.");$("tituloFormCargo").focus();window.scrollTo({top:$("formCargo").offsetTop-90,behavior:"smooth"});}
   $("novoCargo").addEventListener("click",abrirCargo);$("cancelarCargo").addEventListener("click",()=>$("formCargo").classList.add("hidden"));
   $("salvarCargo").addEventListener("click",async()=>{const b=$("salvarCargo");ROHAdmin.busy(b,true,"Salvando...");try{const r=await ROH.rpc("roh_admin_salvar_cargo_v2",{p_cargo_id:$("cargoId").value?Number($("cargoId").value):null,p_concurso_id:Number($("cargoConcursoId").value),p_nome:$("cargoNome").value,p_nivel:$("cargoNivel").value,p_ativo:$("cargoAtivo").value==="true"});ROHAdmin.notice("statusFormCargo",`Cargo #${r.cargo_id} salvo.`,"success");await carregarCargos(Number($("cargoConcursoId").value));await carregarConcursos();}catch(e){console.error(e);ROHAdmin.notice("statusFormCargo",e.message||"Falha ao salvar cargo.","error");}finally{ROHAdmin.busy(b,false);}});
 });
