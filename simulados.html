@@ -12,8 +12,8 @@
 <main class="page">
   <section id="landing">
     <div class="eyebrow">Simulados oficiais</div><h1 class="title">Treine no formato da prova</h1><p class="subtitle">A montagem respeita a estrutura de disciplinas, quantidade de questões, pontuação e duração configuradas para o cargo.</p>
-    <section class="filters"><div class="filter-grid"><div class="field" style="grid-column:span 3"><label>Cargo</label><select id="cargo"></select></div><div class="field"><button id="check" class="btn-primary" style="width:100%" disabled>Ver disponibilidade</button></div></div></section>
-    <div id="availability" class="notice">Selecione um cargo para verificar se o banco já permite montar a prova completa.</div>
+    <section class="filters"><div class="filter-grid"><div class="field" style="grid-column:span 3"><label for="cargo">Cargo</label><select id="cargo"></select></div><div class="field"><button id="check" class="btn-primary" style="width:100%" disabled>Ver disponibilidade</button></div></div></section>
+    <div id="availability" class="notice" role="status" aria-live="polite" aria-atomic="true">Selecione um cargo para verificar se o banco já permite montar a prova completa.</div>
     <div id="startBox" class="actions hidden"><button id="start" class="btn-primary">Iniciar simulado</button></div>
     <section class="panel panel-pad" style="margin-top:24px"><h2 style="margin-top:0">Seus simulados recentes</h2><div id="history" class="list"><div class="notice">Carregando histórico...</div></div></section>
   </section>
@@ -22,13 +22,13 @@
     <div class="eyebrow">Simulado em andamento</div><h1 class="title" id="examTitle">Prova</h1><p class="subtitle" id="examSub"></p>
     <div class="progress" style="margin-top:18px"><span id="progress" style="width:0%"></span></div>
     <article class="question">
-      <div class="question-head"><span id="qnum" class="question-num"></span><span id="qdif" class="pill"></span></div><div id="qmeta" class="meta"></div><div id="qtext" class="question-text"></div><div id="options" class="options"></div><div id="saved" class="notice hidden"></div>
+      <div class="question-head"><span id="qnum" class="question-num"></span><span id="qdif" class="pill"></span></div><div id="qmeta" class="meta"></div><div id="qtext" class="question-text"></div><div id="options" class="options"></div><div id="saved" class="notice hidden" role="status" aria-live="polite" aria-atomic="true"></div>
       <div class="actions"><button id="prev" class="btn-ghost">← Anterior</button><button id="next" class="btn-ghost">Próxima →</button><button id="finish" class="btn-primary push">Finalizar simulado</button></div>
     </article>
   </section>
 
   <section id="result" class="hidden">
-    <div class="eyebrow">Resultado</div><h1 class="title">Simulado concluído</h1><section class="stats"><div class="stat"><span>Acertos</span><strong id="rAcertos">0</strong></div><div class="stat"><span>Erros</span><strong id="rErros">0</strong></div><div class="stat"><span>Brancos</span><strong id="rBrancos">0</strong></div><div class="stat"><span>Percentual</span><strong id="rPct">0%</strong></div></section><div id="rStatus" class="notice"></div><div class="actions"><button id="backHome" class="btn-primary">Voltar aos simulados</button></div><div id="reviewList" class="list"></div>
+    <div class="eyebrow">Resultado</div><h1 class="title">Simulado concluído</h1><section class="stats"><div class="stat"><span>Acertos</span><strong id="rAcertos">0</strong></div><div class="stat"><span>Erros</span><strong id="rErros">0</strong></div><div class="stat"><span>Brancos</span><strong id="rBrancos">0</strong></div><div class="stat"><span>Percentual</span><strong id="rPct">0%</strong></div></section><div id="rStatus" class="notice" role="status" aria-live="polite" aria-atomic="true"></div><div class="actions"><button id="backHome" class="btn-primary">Voltar aos simulados</button></div><div id="reviewList" class="list"></div>
   </section>
 </main>
 <script>
