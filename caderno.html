@@ -12,16 +12,16 @@
 <main class="page">
   <div class="eyebrow">Caderno inteligente</div><h1 class="title">Uma sessão focada em você</h1><p class="subtitle">O sistema prioriza questões nunca respondidas, depois questões que você já errou e, por último, as que já acertou.</p>
   <section class="filters" id="setup"><div class="filter-grid">
-    <div class="field"><label>Cargo</label><select id="cargo"></select></div>
-    <div class="field"><label>Disciplina</label><select id="disciplina" disabled><option>Opcional</option></select></div>
-    <div class="field"><label>Assunto</label><select id="assunto" disabled><option>Todos</option></select></div>
-    <div class="field"><label>Dificuldade</label><select id="dificuldade"><option value="">Todas</option><option>Fácil</option><option>Média</option><option>Difícil</option></select></div>
-    <div class="field"><label>Quantidade</label><select id="quantidade"><option>5</option><option selected>10</option><option>20</option><option>30</option></select></div>
+    <div class="field"><label for="cargo">Cargo</label><select id="cargo"></select></div>
+    <div class="field"><label for="disciplina">Disciplina</label><select id="disciplina" disabled><option>Opcional</option></select></div>
+    <div class="field"><label for="assunto">Assunto</label><select id="assunto" disabled><option>Todos</option></select></div>
+    <div class="field"><label for="dificuldade">Dificuldade</label><select id="dificuldade"><option value="">Todas</option><option>Fácil</option><option>Média</option><option>Difícil</option></select></div>
+    <div class="field"><label for="quantidade">Quantidade</label><select id="quantidade"><option>5</option><option selected>10</option><option>20</option><option>30</option></select></div>
     <div class="field" style="grid-column:span 3"><button id="iniciar" class="btn-primary" style="width:100%" disabled>Iniciar caderno</button></div>
   </div></section>
   <section id="sessionStats" class="stats hidden"><div class="stat"><span>Respondidas</span><strong id="sResp">0</strong></div><div class="stat"><span>Acertos</span><strong id="sAce">0</strong></div><div class="stat"><span>Erros</span><strong id="sErr">0</strong></div><div class="stat"><span>Aproveitamento</span><strong id="sPct">0%</strong></div></section>
-  <div id="status" class="notice">Configure o caderno e inicie uma sessão.</div>
-  <article id="question" class="question hidden"><div class="question-head"><span id="ordem" class="question-num"></span><span id="dif" class="pill"></span></div><div id="meta" class="meta"></div><div id="texto" class="question-text"></div><div id="options" class="options"></div><div id="answer" class="answer-box hidden"></div><div id="actions" class="actions hidden"><button id="proxima" class="btn-primary push">Próxima →</button></div></article>
+  <div id="status" class="notice" role="status" aria-live="polite" aria-atomic="true">Configure o caderno e inicie uma sessão.</div>
+  <article id="question" class="question hidden"><div class="question-head"><span id="ordem" class="question-num"></span><span id="dif" class="pill"></span></div><div id="meta" class="meta"></div><div id="texto" class="question-text"></div><div id="options" class="options"></div><div id="answer" class="answer-box hidden" role="status" aria-live="polite" aria-atomic="true"></div><div id="actions" class="actions hidden"><button id="proxima" class="btn-primary push">Próxima →</button></div></article>
   <section class="panel panel-pad" style="margin-top:24px"><h2 style="margin-top:0">Sessões recentes</h2><div id="history" class="list"><div class="notice">Carregando histórico...</div></div></section>
 </main>
 <script>
