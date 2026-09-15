@@ -11,9 +11,9 @@
 <header class="topbar"><a class="brand" href="area.html"><span class="brand-mark">R</span><span class="brand-text"><strong>ROH Concursos</strong><span>Desempenho</span></span></a><div class="top-actions"><a class="btn-ghost" href="area.html">Área do aluno</a><span class="user-email" data-user-email></span><button class="btn-ghost" data-logout>Sair</button></div></header>
 <main class="page">
   <div class="eyebrow">Desempenho</div><h1 class="title">Acompanhe sua evolução</h1><p class="subtitle">Os resultados são calculados separadamente por cargo, disciplina e assunto.</p>
-  <section class="filters"><div class="filter-grid"><div class="field" style="grid-column:span 3"><label>Cargo</label><select id="cargo"></select></div><div class="field"><button id="carregar" class="btn-primary" style="width:100%" disabled>Atualizar painel</button></div></div></section>
+  <section class="filters"><div class="filter-grid"><div class="field" style="grid-column:span 3"><label for="cargo">Cargo</label><select id="cargo"></select></div><div class="field"><button id="carregar" class="btn-primary" style="width:100%" disabled>Atualizar painel</button></div></div></section>
   <section class="stats"><div class="stat"><span>Respondidas</span><strong id="respondidas">0</strong></div><div class="stat"><span>Acertos</span><strong id="acertos">0</strong></div><div class="stat"><span>Erros</span><strong id="erros">0</strong></div><div class="stat"><span>Aproveitamento</span><strong id="pct">0%</strong></div></section>
-  <div id="status" class="notice">Selecione um cargo.</div>
+  <div id="status" class="notice" role="status" aria-live="polite" aria-atomic="true">Selecione um cargo.</div>
   <section class="grid grid-2" style="margin-top:20px">
     <div class="panel panel-pad"><h2 style="margin-top:0">Por disciplina</h2><div class="table-wrap"><table><thead><tr><th>Disciplina</th><th>Respondidas</th><th>Acertos</th><th>Erros</th><th>%</th></tr></thead><tbody id="tbDisc"></tbody></table></div></div>
     <div class="panel panel-pad"><h2 style="margin-top:0">Assuntos com menor aproveitamento</h2><div class="table-wrap"><table><thead><tr><th>Assunto</th><th>Disciplina</th><th>Resp.</th><th>%</th></tr></thead><tbody id="tbAss"></tbody></table></div></div>
