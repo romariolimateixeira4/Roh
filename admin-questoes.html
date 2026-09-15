@@ -13,42 +13,42 @@
   <div class="eyebrow">Administração</div><h1 class="title">Banco de questões</h1><p class="subtitle">Crie e edite questões canônicas com referência rastreável. Alterações em questão compartilhada afetam todos os cargos vinculados.</p>
   <section class="panel panel-pad" style="margin-top:24px">
     <div class="grid grid-4">
-      <div class="field"><label>Concurso</label><select id="concurso"></select></div>
-      <div class="field"><label>Cargo de contexto</label><select id="cargo"></select></div>
-      <div class="field"><label>Disciplina</label><select id="disciplina"></select></div>
-      <div class="field"><label>Assunto</label><select id="assunto"></select></div>
-      <div class="field"><label>Dificuldade</label><select id="dificuldade"><option>Fácil</option><option selected>Média</option><option>Difícil</option></select></div>
-      <div class="field"><label>Status</label><select id="ativo"><option value="true">Ativa</option><option value="false">Inativa</option></select></div>
-      <div class="field"><label>Banca-alvo</label><input id="banca" value="ICAP"></div>
-      <div class="field"><label>Ano</label><input id="ano" type="number" value="2026"></div>
-      <div class="field"><label>Origem</label><select id="origem"><option value="inedita">Inédita ROH</option><option value="prova">Questão de prova</option><option value="adaptada">Adaptada</option></select></div>
-      <div class="field" style="grid-column:span 3"><label>ID em edição</label><input id="questaoId" readonly placeholder="Nova questão"></div>
+      <div class="field"><label for="concurso">Concurso</label><select id="concurso"></select></div>
+      <div class="field"><label for="cargo">Cargo de contexto</label><select id="cargo"></select></div>
+      <div class="field"><label for="disciplina">Disciplina</label><select id="disciplina"></select></div>
+      <div class="field"><label for="assunto">Assunto</label><select id="assunto"></select></div>
+      <div class="field"><label for="dificuldade">Dificuldade</label><select id="dificuldade"><option>Fácil</option><option selected>Média</option><option>Difícil</option></select></div>
+      <div class="field"><label for="ativo">Status</label><select id="ativo"><option value="true">Ativa</option><option value="false">Inativa</option></select></div>
+      <div class="field"><label for="banca">Banca-alvo</label><input id="banca" value="ICAP"></div>
+      <div class="field"><label for="ano">Ano</label><input id="ano" type="number" value="2026"></div>
+      <div class="field"><label for="origem">Origem</label><select id="origem"><option value="inedita">Inédita ROH</option><option value="prova">Questão de prova</option><option value="adaptada">Adaptada</option></select></div>
+      <div class="field" style="grid-column:span 3"><label for="questaoId">ID em edição</label><input id="questaoId" readonly placeholder="Nova questão"></div>
     </div>
-    <div class="field" style="margin-top:16px"><label>Enunciado</label><textarea id="enunciado" style="min-height:130px"></textarea></div>
+    <div class="field" style="margin-top:16px"><label for="enunciado">Enunciado</label><textarea id="enunciado" style="min-height:130px"></textarea></div>
     <div class="grid grid-2" style="margin-top:14px">
-      <div class="field"><label>Alternativa A</label><textarea id="a"></textarea></div><div class="field"><label>Alternativa B</label><textarea id="b"></textarea></div>
-      <div class="field"><label>Alternativa C</label><textarea id="c"></textarea></div><div class="field"><label>Alternativa D</label><textarea id="d"></textarea></div>
-      <div class="field hidden" id="boxE"><label>Alternativa E</label><textarea id="e"></textarea></div>
-      <div class="field" id="boxCorreta"><label>Alternativa correta</label><select id="correta"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
-      <div class="field hidden" id="boxCE"><label>Gabarito C/E</label><select id="gabaritoCe"><option value="C">CERTO</option><option value="E">ERRADO</option></select></div>
+      <div class="field"><label for="a">Alternativa A</label><textarea id="a"></textarea></div><div class="field"><label for="b">Alternativa B</label><textarea id="b"></textarea></div>
+      <div class="field"><label for="c">Alternativa C</label><textarea id="c"></textarea></div><div class="field"><label for="d">Alternativa D</label><textarea id="d"></textarea></div>
+      <div class="field hidden" id="boxE"><label for="e">Alternativa E</label><textarea id="e"></textarea></div>
+      <div class="field" id="boxCorreta"><label for="correta">Alternativa correta</label><select id="correta"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+      <div class="field hidden" id="boxCE"><label for="gabaritoCe">Gabarito C/E</label><select id="gabaritoCe"><option value="C">CERTO</option><option value="E">ERRADO</option></select></div>
     </div>
     <div class="grid grid-2" style="margin-top:14px">
-      <div class="field"><label>Explicação</label><textarea id="explicacao"></textarea></div>
-      <div class="field"><label>Base / fundamentação</label><textarea id="baseLegal"></textarea></div>
+      <div class="field"><label for="explicacao">Explicação</label><textarea id="explicacao"></textarea></div>
+      <div class="field"><label for="baseLegal">Base / fundamentação</label><textarea id="baseLegal"></textarea></div>
     </div>
-    <div class="field" style="margin-top:14px"><label>Referência rastreável</label><textarea id="referencia" placeholder="Ex.: Fonte oficial: Planalto — Lei nº ...; texto aplicável em 28/05/2026."></textarea></div>
+    <div class="field" style="margin-top:14px"><label for="referencia">Referência rastreável</label><textarea id="referencia" placeholder="Ex.: Fonte oficial: Planalto — Lei nº ...; texto aplicável em 28/05/2026."></textarea></div>
     <div class="actions"><button id="salvar" class="btn-primary">Salvar questão</button><button id="novo" class="btn-ghost">Nova / limpar</button><button id="revisada" class="btn-success hidden">Marcar como revisada</button><button id="pendente" class="btn-danger hidden">Voltar para pendente</button></div>
-    <div id="statusForm" class="notice">Pronto para edição.</div>
+    <div id="statusForm" class="notice" role="status" aria-live="polite" aria-atomic="true">Pronto para edição.</div>
   </section>
 
   <section class="panel panel-pad" style="margin-top:24px">
     <h2 style="margin-top:0">Questões cadastradas</h2>
     <div class="filter-grid">
-      <div class="field" style="grid-column:span 2"><label>Buscar no enunciado</label><input id="busca" placeholder="Digite parte do texto"></div>
-      <div class="field"><label>Status</label><select id="filtroStatus"><option value="">Todas</option><option value="true">Ativas</option><option value="false">Inativas</option></select></div>
+      <div class="field" style="grid-column:span 2"><label for="busca">Buscar no enunciado</label><input id="busca" placeholder="Digite parte do texto"></div>
+      <div class="field"><label for="filtroStatus">Status</label><select id="filtroStatus"><option value="">Todas</option><option value="true">Ativas</option><option value="false">Inativas</option></select></div>
       <div class="field"><button id="buscar" class="btn-primary" style="width:100%">Atualizar lista</button></div>
     </div>
-    <div id="contador" class="notice">Carregando...</div>
+    <div id="contador" class="notice" role="status" aria-live="polite" aria-atomic="true">Carregando...</div>
     <div class="table-wrap"><table><thead><tr><th>ID</th><th>Contexto</th><th>Assunto</th><th>Dificuldade</th><th>Enunciado</th><th>Gabarito</th><th>Vínculos</th><th>Revisão</th><th>Ação</th></tr></thead><tbody id="lista"></tbody></table></div>
     <div class="actions"><button id="anterior" class="btn-ghost">← Anterior</button><button id="proxima" class="btn-ghost">Próxima →</button></div>
   </section>
