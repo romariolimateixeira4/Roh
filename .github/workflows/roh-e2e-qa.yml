@@ -36,76 +36,82 @@ jobs:
           node <<'NODE'
           const { chromium } = require('playwright');
           const fs = require('fs');
-          const base = process.env.BASE_URL.replace(/\/$/, '');
-          const publicPages = [
-            {path: '/', name: 'home'},
-            {path: '/login.html', name: 'login'},
-            {path: '/cadastro.html', name: 'cadastro'}
-          ];
-          const protectedPages = [
-            'area.html','questoes.html','caderno.html','revisao.html','desempenho.html',
-            'simulados.html','ranking.html','calendario.html','admin.html'
-          ];
-          const viewports = [
-            {name:'mobile', width:375, height:812},
-            {name:'tablet', width:768, height:1024},
-            {name:'desktop', width:1440, height:1000}
-          ];
-          const failures = [];
-          const browser = await chromium.launch({headless:true});
 
-          async function inspect(page, label) {
-            const pageErrors = [];
-            const consoleErrors = [];
-            page.on('pageerror', e => pageErrors.push(String(e.message || e)));
-            page.on('console', m => { if (m.type() === 'error') consoleErrors.push(m.text()); });
-            const resp = await page.goto(label.url, {waitUntil:'networkidle', timeout:30000});
-            if (!resp || resp.status() >= 400) failures.push(`${label.name}: HTTP ${resp?.status() ?? 'sem resposta'}`);
-            await page.waitForTimeout(700);
-            const title = await page.title();
-            const bodyText = await page.locator('body').innerText().catch(()=> '');
-            const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
-            if (overflow) failures.push(`${label.name}: overflow horizontal em ${label.viewport}`);
-            if (!title.trim()) failures.push(`${label.name}: título vazio`);
-            if (!bodyText.trim()) failures.push(`${label.name}: body sem conteúdo visível`);
-            if (pageErrors.length) failures.push(`${label.name}: pageerror: ${pageErrors.join(' | ')}`);
-            const relevantConsole = consoleErrors.filter(x => !/favicon|Failed to load resource.*404/i.test(x));
-            if (relevantConsole.length) failures.push(`${label.name}: console error: ${relevantConsole.join(' | ')}`);
-            return {title, url: page.url(), bodyText};
-          }
+          (async () => {
+            const base = process.env.BASE_URL.replace(/\/$/, '');
+            const publicPages = [
+              {path: '/', name: 'home'},
+              {path: '/login.html', name: 'login'},
+              {path: '/cadastro.html', name: 'cadastro'}
+            ];
+            const protectedPages = [
+              'area.html','questoes.html','caderno.html','revisao.html','desempenho.html',
+              'simulados.html','ranking.html','calendario.html','admin.html'
+            ];
+            const viewports = [
+              {name:'mobile', width:375, height:812},
+              {name:'tablet', width:768, height:1024},
+              {name:'desktop', width:1440, height:1000}
+            ];
+            const failures = [];
+            const browser = await chromium.launch({headless:true});
 
-          for (const vp of viewports) {
-            const context = await browser.newContext({viewport:{width:vp.width,height:vp.height}});
-            for (const p of publicPages) {
-              const page = await context.newPage();
-              const info = await inspect(page, {name:`${p.name}-${vp.name}`, viewport:vp.name, url:`${base}${p.path}`});
-              await page.screenshot({path:`qa-screenshots/${p.name}-${vp.name}.png`, fullPage:true});
-              if (p.name === 'login' && !/entrar|login/i.test(info.bodyText)) failures.push(`login-${vp.name}: conteúdo esperado não encontrado`);
-              if (p.name === 'cadastro' && !/cadastro|criar|conta/i.test(info.bodyText)) failures.push(`cadastro-${vp.name}: conteúdo esperado não encontrado`);
+            async function inspect(page, label) {
+              const pageErrors = [];
+              const consoleErrors = [];
+              page.on('pageerror', e => pageErrors.push(String(e.message || e)));
+              page.on('console', m => { if (m.type() === 'error') consoleErrors.push(m.text()); });
+              const resp = await page.goto(label.url, {waitUntil:'networkidle', timeout:30000});
+              if (!resp || resp.status() >= 400) failures.push(`${label.name}: HTTP ${resp?.status() ?? 'sem resposta'}`);
+              await page.waitForTimeout(700);
+              const title = await page.title();
+              const bodyText = await page.locator('body').innerText().catch(()=> '');
+              const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+              if (overflow) failures.push(`${label.name}: overflow horizontal em ${label.viewport}`);
+              if (!title.trim()) failures.push(`${label.name}: título vazio`);
+              if (!bodyText.trim()) failures.push(`${label.name}: body sem conteúdo visível`);
+              if (pageErrors.length) failures.push(`${label.name}: pageerror: ${pageErrors.join(' | ')}`);
+              const relevantConsole = consoleErrors.filter(x => !/favicon|Failed to load resource.*404/i.test(x));
+              if (relevantConsole.length) failures.push(`${label.name}: console error: ${relevantConsole.join(' | ')}`);
+              return {title, url: page.url(), bodyText};
+            }
+
+            for (const vp of viewports) {
+              const context = await browser.newContext({viewport:{width:vp.width,height:vp.height}});
+              for (const p of publicPages) {
+                const page = await context.newPage();
+                const info = await inspect(page, {name:`${p.name}-${vp.name}`, viewport:vp.name, url:`${base}${p.path}`});
+                await page.screenshot({path:`qa-screenshots/${p.name}-${vp.name}.png`, fullPage:true});
+                if (p.name === 'login' && !/entrar|login/i.test(info.bodyText)) failures.push(`login-${vp.name}: conteúdo esperado não encontrado`);
+                if (p.name === 'cadastro' && !/cadastro|criar|conta/i.test(info.bodyText)) failures.push(`cadastro-${vp.name}: conteúdo esperado não encontrado`);
+                await page.close();
+              }
+              await context.close();
+            }
+
+            const authContext = await browser.newContext({viewport:{width:390,height:844}});
+            for (const name of protectedPages) {
+              const page = await authContext.newPage();
+              const source = `${base}/${name}`;
+              await page.goto(source, {waitUntil:'domcontentloaded', timeout:30000});
+              await page.waitForTimeout(1800);
+              const finalUrl = page.url();
+              if (!/login\.html/i.test(finalUrl)) failures.push(`${name}: sem sessão não redirecionou para login; final=${finalUrl}`);
               await page.close();
             }
-            await context.close();
-          }
+            await authContext.close();
+            await browser.close();
 
-          const authContext = await browser.newContext({viewport:{width:390,height:844}});
-          for (const name of protectedPages) {
-            const page = await authContext.newPage();
-            const source = `${base}/${name}`;
-            await page.goto(source, {waitUntil:'domcontentloaded', timeout:30000});
-            await page.waitForTimeout(1800);
-            const finalUrl = page.url();
-            if (!/login\.html/i.test(finalUrl)) failures.push(`${name}: sem sessão não redirecionou para login; final=${finalUrl}`);
-            await page.close();
-          }
-          await authContext.close();
-          await browser.close();
-
-          fs.writeFileSync('qa-screenshots/result.txt', failures.length ? failures.join('\n') : 'PASS: live browser QA completed without detected failures.\n');
-          if (failures.length) {
-            console.error('QA FAILURES:\n' + failures.map(x=>'- '+x).join('\n'));
+            fs.writeFileSync('qa-screenshots/result.txt', failures.length ? failures.join('\n') : 'PASS: live browser QA completed without detected failures.\n');
+            if (failures.length) {
+              console.error('QA FAILURES:\n' + failures.map(x=>'- '+x).join('\n'));
+              process.exit(1);
+            }
+            console.log('PASS: live browser QA completed without detected failures.');
+          })().catch(err => {
+            console.error(err);
             process.exit(1);
-          }
-          console.log('PASS: live browser QA completed without detected failures.');
+          });
           NODE
 
       - name: Upload QA screenshots
