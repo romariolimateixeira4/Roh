@@ -95,19 +95,29 @@
   }
 
   function normalizedQuestion(q = {}) {
+    const tipo = q.tipo_questao ?? "multipla_escolha";
     const alternatives = [];
-    ["A","B","C","D","E"].forEach(letter => {
-      const k = letter.toLowerCase();
-      const v = q[`alternativa_${k}`] ?? q[`alternativa_${letter}`] ?? q[`alternativa${letter}`] ?? q.alternativas?.[letter] ?? q.alternativas?.[k];
-      if (v !== null && v !== undefined && String(v).trim()) alternatives.push({ letter, text: String(v) });
-    });
+
+    if (tipo === "certo_errado") {
+      alternatives.push(
+        { letter: "C", text: "Certo" },
+        { letter: "E", text: "Errado" }
+      );
+    } else {
+      ["A","B","C","D","E"].forEach(letter => {
+        const k = letter.toLowerCase();
+        const v = q[`alternativa_${k}`] ?? q[`alternativa_${letter}`] ?? q[`alternativa${letter}`] ?? q.alternativas?.[letter] ?? q.alternativas?.[k];
+        if (v !== null && v !== undefined && String(v).trim()) alternatives.push({ letter, text: String(v) });
+      });
+    }
+
     return {
       id: q.questao_id ?? q.id,
       enunciado: String(q.enunciado ?? q.questao ?? q.texto ?? ""),
       dificuldade: String(q.dificuldade ?? ""),
       disciplina: String(q.disciplina ?? q.disciplina_nome ?? ""),
       assunto: String(q.assunto ?? q.assunto_nome ?? ""),
-      tipo: q.tipo_questao ?? "multipla_escolha",
+      tipo,
       alternatives
     };
   }
