@@ -64,7 +64,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
       if(password.length<8)throw new Error("A senha deve ter pelo menos 8 caracteres.");
       if(password!==confirm)throw new Error("As senhas não coincidem.");
       if(!item)throw new Error("Selecione um concurso e cargo válidos.");
-      const {data,error}=await ROH.client.auth.signUp({email,password,options:{data:{nome,concurso_interesse_id:concursoId,cargo_interesse_id:cargoId,cargo_interesse:item.cargo}}});
+      const {data,error}=await ROH.client.auth.signUp({email,password,options:{emailRedirectTo:"https://romariolimateixeira4.github.io/Roh/login.html",data:{nome,concurso_interesse_id:concursoId,cargo_interesse_id:cargoId,cargo_interesse:item.cargo}}});
       if(error)throw error;
       if(data?.session){show("Conta criada. Abrindo o estado do acesso...",false);location.href="assinatura.html";return}
       show("Conta criada. Se a confirmação de e-mail estiver habilitada, confirme a mensagem enviada ao seu e-mail e depois entre na ROH. Durante o beta, aguarde a liberação administrativa do acesso.",false);
